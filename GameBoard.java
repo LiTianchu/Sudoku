@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.EventListener;
+
 import javax.swing.*;
 
 public class GameBoard extends JPanel {
@@ -31,12 +33,16 @@ public class GameBoard extends JPanel {
 
       // [TODO 3] Allocate a common listener as the ActionEvent listener for all the
       // Cells (JTextFields)
-      CellInputListener listener = new CellInputListener();
+      // CellInputListener listener = new CellInputListener();
+      AddKeyListener validateListener = new AddKeyListener();
+
       // [TODO 4] Every editable cell adds this common listener
       for (int row = 0; row < GRID_SIZE; ++row) {
          for (int col = 0; col < GRID_SIZE; ++col) {
             if (cells[row][col].isEditable()) {
-               cells[row][col].addActionListener(listener); // For all editable rows and cols
+               cells[row][col].addKeyListener(validateListener); // Validate input
+               // cells[row][col].addActionListener(listener); // For all editable rows and
+               // cols
             }
          }
       }
@@ -61,7 +67,7 @@ public class GameBoard extends JPanel {
       }
    }
 
-   /**
+   /*
     * Return true if the puzzle is solved
     * i.e., none of the cell have status of NO_GUESS or WRONG_GUESS
     */
@@ -81,12 +87,24 @@ public class GameBoard extends JPanel {
       public void actionPerformed(ActionEvent e) {
          // Get a reference of the JTextField that triggers this action event
          Cell sourceCell = (Cell) e.getSource();
+         int numberIn = -1;
 
          // Retrieve the int entered
-         int numberIn = Integer.parseInt(sourceCell.getText());
+         if (sourceCell.getText().isEmpty()) {
+            numberIn = 0;
+         } else {
+            numberIn = Integer.parseInt(sourceCell.getText());
+         }
+
          // For debugging
          System.out.println("You entered " + numberIn);
 
+         /*
+          * [TODO 5]
+          * Check the numberIn against sourceCell.number.
+          * Update the cell status sourceCell.status,
+          * and re-paint the cell via sourceCell.paint().
+          */
          if (numberIn == sourceCell.number) {
             sourceCell.status = CellStatus.CORRECT_GUESS;
          } else if (numberIn == 0) {
@@ -95,27 +113,57 @@ public class GameBoard extends JPanel {
             sourceCell.status = CellStatus.WRONG_GUESS;
          }
          sourceCell.paint();
-         /*
-          * [TODO 5]
-          * Check the numberIn against sourceCell.number.
-          * Update the cell status sourceCell.status,
-          * and re-paint the cell via sourceCell.paint().
-          */
-         // if (numberIn == sourceCell.number) {
-         // sourceCell.status = CellStatus.CORRECT_GUESS;
-         // } else {
-         // ......
-         // }
-         // sourceCell.paint();
-         if (isSolved()) {
-            JOptionPane.showMessageDialog(null, "Congratulation!");
-         }
 
          /*
           * [TODO 6][Later] Check if the player has solved the puzzle after this move,
           * by call isSolved(). Put up a congratulation JOptionPane, if so.
           */
+         if (isSolved()) {
+            JOptionPane.showMessageDialog(null, "Congratulation!");
+         }
       }
+   }
+
+   private class AddKeyListener implements KeyListener {
+      @Override
+      public void keyPressed(KeyEvent ke) {
+         Cell sourceCell = (Cell) ke.getSource();
+         int numberIn = -1;
+
+         if (ke.getKeyChar() >= '1' && ke.getKeyChar() <= '9') {
+            sourceCell.setEditable(true);
+            sourceCell.setText("");
+            numberIn = ke.getKeyChar() - 48;
+
+            // For debugging
+            System.out.println("You entered " + numberIn);
+
+            if (numberIn == sourceCell.number) {
+               sourceCell.status = CellStatus.CORRECT_GUESS;
+            } else if (numberIn == 0) {
+               sourceCell.status = CellStatus.NO_GUESS;
+            } else {
+               sourceCell.status = CellStatus.WRONG_GUESS;
+            }
+            sourceCell.paint();
+
+            if (isSolved()) {
+               JOptionPane.showMessageDialog(null, "Congratulation!");
+            }
+
+         } else {
+            sourceCell.setEditable(false);
+         }
+      }
+
+      @Override
+      public void keyReleased(KeyEvent ke) {
+      }
+
+      @Override
+      public void keyTyped(KeyEvent ke) {
+      }
+
    }
 
    // private JButton restartBtn;
