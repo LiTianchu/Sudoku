@@ -1,36 +1,42 @@
-import java.awt.*; 
-import java.awt.event.*; 
-import javax.swing.*; 
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
-public class SudokuMain extends JFrame{
-  
-     // private variables
-   GameBoard board = new GameBoard();
-   JButton btnNewGame = new JButton("New Game");
+public class SudokuMain extends JFrame {
 
-   // Constructor
-   public SudokuMain() {
-      Container cp = getContentPane();
-      cp.setLayout(new BorderLayout());
+    // private variables
+    GameBoard board = new GameBoard();
+    JButton btnNewGame = new JButton("New Game");
 
-      cp.add(board, BorderLayout.CENTER);
+    // Constructor
+    public SudokuMain() {
+        Container cp = getContentPane();
+        cp.setLayout(new BorderLayout());
 
-      // Add a button to the south to re-start the game
-      // ......
+        cp.add(board, BorderLayout.CENTER);
 
-      board.init();
+        // Add a button to the south to re-start the game
+        // ......
 
-      pack();     // Pack the UI components, instead of setSize()
-      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Handle window closing
-      setTitle("Sudoku");
-      setVisible(true);
-   }
+        board.init();
 
-   /** The entry main() entry method */
-   public static void main(String[] args) {
-      // [TODO 1] Check Swing program template on how to run the constructor
-     // ......
-     SudokuMain sudoku = new SudokuMain();
-   }
-    
+        pack(); // Pack the UI components, instead of setSize()
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Handle window closing
+        setTitle("Sudoku");
+        setVisible(true);
+    }
+
+    /** The entry main() entry method */
+    public static void main(String[] args) {
+        // [TODO 1] Check Swing program template on how to run the constructor
+        // ......
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                SudokuMain sudokuMain = new SudokuMain();
+
+            }
+        });
+    }
+
 }
