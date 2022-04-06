@@ -67,6 +67,49 @@ public class GameBoard extends JPanel {
        }
        return true;
     }
+    private class CellInputListener implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+       // Get a reference of the JTextField that triggers this action event
+       Cell sourceCell = (Cell)e.getSource();
+       
+       // Retrieve the int entered
+       int numberIn = Integer.parseInt(sourceCell.getText());
+       // For debugging
+       System.out.println("You entered " + numberIn);
+
+       if (numberIn == sourceCell.number){
+           sourceCell.status = CellStatus.CORRECT_GUESS;
+       }else if(numberIn == 0){
+           sourceCell.status = CellStatus.NO_GUESS;
+       }else{
+           sourceCell.status = CellStatus.WRONG_GUESS;
+       }
+       sourceCell.paint();
+       /*
+        * [TODO 5]
+        * Check the numberIn against sourceCell.number.
+        * Update the cell status sourceCell.status,
+        * and re-paint the cell via sourceCell.paint().
+        */
+        //if (numberIn == sourceCell.number) {
+        //   sourceCell.status = CellStatus.CORRECT_GUESS;
+        //} else {
+        //   ......
+        //}
+        //sourceCell.paint();
+        if(isSolved()){
+            JOptionPane.showMessageDialog(null, "Congratulation!");
+        }
+
+
+       /*
+        * [TODO 6][Later] Check if the player has solved the puzzle after this move,
+        *   by call isSolved(). Put up a congratulation JOptionPane, if so.
+        */
+    }
+}
+ 
     // private JButton restartBtn;
     // private JButton settingBtn;
     // private JButton checkBtn;
