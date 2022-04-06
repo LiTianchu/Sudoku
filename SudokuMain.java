@@ -30,6 +30,7 @@ public class SudokuMain extends JFrame{
    public static void main(String[] args) {
       // [TODO 1] Check Swing program template on how to run the constructor
      // ......
+     SudokuMain sudoku = new SudokuMain();
    }
     
 }
