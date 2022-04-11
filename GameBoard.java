@@ -3,6 +3,7 @@ import java.awt.event.*;
 import java.util.EventListener;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 public class GameBoard extends JPanel {
    public static final int GRID_SIZE = 9; // Size of the board
@@ -19,17 +20,32 @@ public class GameBoard extends JPanel {
    // It also contains a Puzzle
    private Puzzle puzzle = new Puzzle();
 
+   private int rowCount = 0;
+   private int colCount = 0;
+
    // Constructor
    public GameBoard() {
-      super.setLayout(new GridLayout(GRID_SIZE, GRID_SIZE)); // JPanel
+      super.setLayout(new GridLayout(SUBGRID_SIZE, SUBGRID_SIZE)); // JPanel
+
+      for (int index = 0; index < 9; index++) { // Big Box has 9 mini boxes
+         SubBoard board = new SubBoard(rowCount, colCount);
+
+         if (index == 2 || index == 5) {
+            colCount = 0;
+            rowCount = rowCount + 3;
+         } else {
+            colCount = colCount + 3;
+         }
+         super.add(board);
+      }
 
       // Allocate the 2D array of Cell, and added into JPanel.
-      for (int row = 0; row < GRID_SIZE; ++row) {
-         for (int col = 0; col < GRID_SIZE; ++col) {
-            cells[row][col] = new Cell(row, col);
-            super.add(cells[row][col]); // JPanel
-         }
-      }
+      // for (int row = 0; row < GRID_SIZE; ++row) {
+      // for (int col = 0; col < GRID_SIZE; ++col) {
+      // cells[row][col] = new Cell(row, col);
+      // super.add(cells[row][col]); // JPanel
+      // }
+      // }
 
       // [TODO 3] Allocate a common listener as the ActionEvent listener for all the
       // Cells (JTextFields)
@@ -48,6 +64,21 @@ public class GameBoard extends JPanel {
       }
 
       super.setPreferredSize(new Dimension(BOARD_WIDTH, BOARD_HEIGHT));
+   }
+
+   public class SubBoard extends JPanel {
+      public SubBoard(int startRow, int startCol) {
+         setLayout(new GridLayout(SUBGRID_SIZE, SUBGRID_SIZE));
+         setBorder(new LineBorder(Color.black, 1));
+
+         for (int row = startRow; row < startRow + 3; row++) {
+            for (int col = startCol; col < startCol + 3; col++) {
+               // System.out.println("row " + row + ", col " + col);
+               cells[row][col] = new Cell(row, col);
+               add(cells[row][col]); // JPanel
+            }
+         }
+      }
    }
 
    /**
