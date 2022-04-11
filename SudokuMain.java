@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.TimerTask;
 import java.util.Random;
 import java.util.Timer;
@@ -15,13 +17,19 @@ public class SudokuMain extends JFrame {
     GameBoard board = new GameBoard();
     // Container cp = getContentPane(); // Container Sudoku
     JFrame cp = new JFrame("Suduko"); // Sudoku Menu
-    // JButton btnNewGame = new JButton("New Game");
-    JButton btnNewGame;
+    JButton btnNewGame = new JButton("New Game");
+
+    // Start Menu
     JFrame startMenu = new JFrame("Suduko"); // Start Menu
     JButton easyBtn = new JButton("Easy");
     JButton mediumBtn = new JButton("Medium");
     JButton hardBtn = new JButton("Hard");
-    ImageIcon water = new ImageIcon("newGameBtn.png");
+
+    // Custom fonts
+    Font pixelMplus;
+    Font pixelMplusTitle;
+
+    // Timer
     Timer timer = new Timer();
     TimerTask task;
     int secondPassed = 0;
@@ -29,16 +37,34 @@ public class SudokuMain extends JFrame {
 
     // Constructor
     public SudokuMain() {
+        // Load custom font
+        try {
+            pixelMplus = Font.createFont(Font.TRUETYPE_FONT, new File("PixelMplus10-Regular.ttf")).deriveFont(18f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(
+                    Font.createFont(Font.TRUETYPE_FONT, new File("PixelMplus10-Regular.ttf")));
+
+            pixelMplusTitle = Font.createFont(Font.TRUETYPE_FONT, new File("PixelMplus10-Regular.ttf")).deriveFont(40f);
+            GraphicsEnvironment ge2 = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge2.registerFont(
+                    Font.createFont(Font.TRUETYPE_FONT, new File("PixelMplus10-Regular.ttf")));
+        } catch (IOException | FontFormatException e) {
+
+        }
+
         // Start Menu-----------------------------------
         startMenu.setLayout(new BorderLayout());
         // Title Panel
         JPanel title = new JPanel(new GridLayout(0, 1, 15, 5));
         JLabel label = new JLabel("SUDUKO", SwingConstants.CENTER);
-        label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+        label.setFont(pixelMplusTitle);
         label.setBorder(new EmptyBorder(40, 0, 0, 0));
         title.add(label);
 
         // Level Option Panel
+        easyBtn.setFont(pixelMplus);
+        mediumBtn.setFont(pixelMplus);
+        hardBtn.setFont(pixelMplus);
         JPanel center = new JPanel(new GridLayout(0, 1, 10, 10));
         center.add(easyBtn);
         center.add(mediumBtn);
@@ -61,10 +87,9 @@ public class SudokuMain extends JFrame {
         cp.add(board, BorderLayout.CENTER);
 
         // Add a button to the south to re-start the game
-        // btnNewGame.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
-        btnNewGame = new JButton(water);
-        btnNewGame.setMargin(new Insets(0, 0, 0, 0)); // to remove the spacing between the image and button's borders
-        btnNewGame.setBorder(null);
+        btnNewGame.setFont(pixelMplus);
+        btnNewGame.setPreferredSize(new Dimension(150, 40));
+
         JPanel flowPanel = new JPanel(new FlowLayout());
         JPanel gridPanel = new JPanel(new GridLayout(0, 1, 10, 10));
         gridPanel.add(btnNewGame);
@@ -120,15 +145,15 @@ public class SudokuMain extends JFrame {
 
             // All the different method according to the level
             // chosen!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            Random random = new Random(); //initialize random
-            //assign each difficulty level the number of shown cells
-            //the harder, the lesser cell to show
-            if (btnLabel.equals("Easy")) { 
-                board.init(random.nextInt(6)+70);
+            Random random = new Random(); // initialize random
+            // assign each difficulty level the number of shown cells
+            // the harder, the lesser cell to show
+            if (btnLabel.equals("Easy")) {
+                board.init(random.nextInt(6) + 70);
             } else if (btnLabel.equals("Medium")) {
-                board.init(random.nextInt(6)+45);
+                board.init(random.nextInt(6) + 45);
             } else {
-                board.init(random.nextInt(6)+20);
+                board.init(random.nextInt(6) + 20);
             }
         }
     }
