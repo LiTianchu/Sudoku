@@ -55,9 +55,9 @@ public class GameBoard extends JPanel {
     * of all the cells from puzzle[][] and isRevealed[][].
     * Call to start a new game.
     */
-   public void init() {
+   public void init(int numToShow) {
       // Get a new puzzle
-      puzzle.newPuzzle(2);
+      puzzle.newPuzzle(numToShow);
 
       // Based on the puzzle, initialize all the cells.
       for (int row = 0; row < GRID_SIZE; ++row) {

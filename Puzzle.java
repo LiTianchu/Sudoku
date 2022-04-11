@@ -9,6 +9,7 @@ public class Puzzle {
     int[][] numbers = new int[GameBoard.GRID_SIZE][GameBoard.GRID_SIZE];
     int[][][] availableNumEachGrid = new int[GameBoard.GRID_SIZE][GameBoard.GRID_SIZE][9];
 
+    int[][] shownNums = new int[GameBoard.GRID_SIZE][GameBoard.GRID_SIZE];
     boolean[][] isShown = new boolean[GameBoard.GRID_SIZE][GameBoard.GRID_SIZE];
 
     // Constructor
@@ -16,9 +17,10 @@ public class Puzzle {
         super(); // JPanel
     }
 
-    public void newPuzzle(int numToGuess) {
-        generateAvailableNums();
+    public void newPuzzle(int numToShow) {
 
+        generateAvailableNums();
+        generateShownNums(numToShow);
         // Hardcoded here for simplicity.
         // int[][] hardcodedNumbers = { { 5, 3, 4, 6, 7, 8, 9, 1, 2 },
         // { 6, 7, 2, 1, 9, 5, 3, 4, 8 },
@@ -35,38 +37,40 @@ public class Puzzle {
         // numbers[row][col] = hardcodedNumbers[row][col];
         // }
         // }
-        boolean successful = false;
+        boolean generationSuccessful = false;
         do {
-            successful = generateNumbers();
-            if (!successful) {
+            generationSuccessful = generateNumbers();
+            if (!generationSuccessful) { // reset to initial states
                 numbers = new int[GameBoard.GRID_SIZE][GameBoard.GRID_SIZE];
                 generateAvailableNums();
             }
-        } while (!successful);
+        } while (!generationSuccessful);
 
         // Need to use numToGuess!
         // For testing, only 2 cells of "8" is NOT shown
-        boolean[][] hardcodedIsShown = { { true, true, true, true, true, false, true, true, true },
-                { true, true, true, true, true, true, true, true, false },
-                { true, true, true, true, true, true, true, true, true },
-                { true, true, true, true, true, true, true, true, true },
-                { true, true, true, true, true, true, true, true, true },
-                { true, true, true, true, true, true, true, true, true },
-                { true, true, true, true, true, true, true, true, true },
-                { true, true, true, true, true, true, true, true, true },
-                { true, true, true, true, true, true, true, true, true } };
+        // boolean[][] hardcodedIsShown = { { true, true, true, true, true, false, true,
+        // true, true },
+        // { true, true, true, true, true, true, true, true, false },
+        // { true, true, true, true, true, true, true, true, true },
+        // { true, true, true, true, true, true, true, true, true },
+        // { true, true, true, true, true, true, true, true, true },
+        // { true, true, true, true, true, true, true, true, true },
+        // { true, true, true, true, true, true, true, true, true },
+        // { true, true, true, true, true, true, true, true, true },
+        // { true, true, true, true, true, true, true, true, true } };
 
-        for (int row = 0; row < GameBoard.GRID_SIZE; ++row) {
-            for (int col = 0; col < GameBoard.GRID_SIZE; ++col) {
-                isShown[row][col] = hardcodedIsShown[row][col];
-            }
-        }
+        // for (int row = 0; row < GameBoard.GRID_SIZE; ++row) {
+        // for (int col = 0; col < GameBoard.GRID_SIZE; ++col) {
+        // isShown[row][col] = hardcodedIsShown[row][col];
+        // }
+        // }
     }
 
     public boolean generateNumbers() {
 
         Random random = new Random();
-        // int count = 0;
+        ArrayList<Integer> availableNumberList;
+
         for (int row = 0; row < numbers.length; row++) { // iterate through number grid
             for (int col = 0; col < numbers[row].length; col++) {
                 int randomNum = 0;
@@ -74,26 +78,29 @@ public class Puzzle {
 
                 int availableCount = 0;
 
-                ArrayList<Integer> availableNumberList = new ArrayList<Integer>(); // generate available number list
+                availableNumberList = new ArrayList<Integer>(); // generate available number list
 
+                // check for availability
                 for (int i = 0; i < availableNumEachGrid[row][col].length; i++) {
-                    if (availableNumEachGrid[row][col][i] > 0 && availableNumEachGrid[row][col][i] < 10) { // check for
-                                                                                                           // availability,
-                                                                                                           // -1 for not
-                                                                                                           // available
+                    if (availableNumEachGrid[row][col][i] > 0 && availableNumEachGrid[row][col][i] < 10) {
                         availableCount++;
                         availableNumberList.add(availableNumEachGrid[row][col][i]);
                     }
 
                 }
+
                 if (availableCount == 0) {
+                    // if no available number, means conflict is detected
+                    // return false to retry generating
                     return false;
                 }
 
                 do {
                     // randomNum = random.nextInt(9) + 1;
-                    randomNum = availableNumberList.get(random.nextInt(availableCount));// get a random element from the
-                                                                                        // list
+
+                    // get a random element from the list
+                    randomNum = availableNumberList.get(random.nextInt(availableCount));
+
                     if (checkRow(row, randomNum) && checkColumn(col, randomNum)
                             && checkBlock(row - row % 3, col - col % 3, randomNum)) {
                         isUnique = true;
@@ -105,6 +112,27 @@ public class Puzzle {
             // count++;
         }
         return true;
+
+    }
+
+    public void generateShownNums(int numToShow) {
+        Random random = new Random();
+        for (int num = numToShow; num > 0; num--) {
+
+            boolean isChanged = false;
+            do {
+                // change a random cell to true
+                int randomInt1 = random.nextInt(GameBoard.GRID_SIZE);
+                int randomInt2 = random.nextInt(GameBoard.GRID_SIZE);
+                // do not change if the cell is already true
+                if (!isShown[randomInt1][randomInt2]) {
+                    isShown[randomInt1][randomInt2] = true;
+                    isChanged = true;
+                }
+
+            } while (!isChanged);// repeat until it is filled
+
+        }
 
     }
 
