@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.TimerTask;
+import java.util.Random;
 import java.util.Timer;
 
 import javax.imageio.ImageIO;
@@ -119,12 +120,15 @@ public class SudokuMain extends JFrame {
 
             // All the different method according to the level
             // chosen!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            if (btnLabel.equals("Easy")) {
-                board.init();
+            Random random = new Random(); //initialize random
+            //assign each difficulty level the number of shown cells
+            //the harder, the lesser cell to show
+            if (btnLabel.equals("Easy")) { 
+                board.init(random.nextInt(6)+70);
             } else if (btnLabel.equals("Medium")) {
-                board.init();
+                board.init(random.nextInt(6)+45);
             } else {
-                board.init();
+                board.init(random.nextInt(6)+20);
             }
         }
     }
