@@ -1,3 +1,4 @@
+package sudoku;
 public enum CellStatus {
    SHOWN,         // number shown, no need to guess
    NO_GUESS,      // need to guess - not attempted yet

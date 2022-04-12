@@ -1,3 +1,4 @@
+package sudoku;
 import javax.swing.RowFilter;
 import java.util.Random;
 import java.util.function.BiPredicate;
