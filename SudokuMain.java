@@ -2,22 +2,22 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Time;
 import java.util.TimerTask;
 import java.util.Random;
 import java.util.Timer;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
 public class SudokuMain extends JFrame {
-
     // private variables
     GameBoard board = new GameBoard();
     // Container cp = getContentPane(); // Container Sudoku
     JFrame cp = new JFrame("Suduko"); // Sudoku Menu
     JButton btnNewGame = new JButton("New Game");
+    JButton btnShowAnswer = new JButton("Solve For Me");
 
     // Start Menu
     JFrame startMenu = new JFrame("Suduko"); // Start Menu
@@ -29,11 +29,14 @@ public class SudokuMain extends JFrame {
     Font pixelMplus;
     Font pixelMplusTitle;
 
+    // Level Label
+    JLabel lvlLabel;
+
     // Timer
-    Timer timer = new Timer();
-    TimerTask task;
-    int secondPassed = 0;
-    JLabel timerDisplay = new JLabel("00:00", SwingConstants.CENTER);
+    // Timer timer = new Timer();
+    // TimerTask task;
+    // int secondPassed = 0;
+    // JLabel timerDisplay = new JLabel("00:00", SwingConstants.CENTER);
 
     // Constructor
     public SudokuMain() {
@@ -86,36 +89,55 @@ public class SudokuMain extends JFrame {
         cp.setLayout(new BorderLayout());
         cp.add(board, BorderLayout.CENTER);
 
+        JPanel flowPanel = new JPanel(new FlowLayout());
+        JPanel gridPanel = new JPanel(new GridLayout(0, 1, 30, 10));
+        gridPanel.setBorder(new EmptyBorder(5, 20, 0, 20));
+
+        // Timer
+        // task = new TimerTask() {
+        // public void run() {
+        // secondPassed++;
+        // timerDisplay.setText(String.format("%02d:%02d", secondPassed / 60,
+        // secondPassed % 60));
+        // }
+        // };
+
+        TimeManagement.timerDisplay.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 45));
+
+        // Level Label
+        lvlLabel = new JLabel("Test", SwingConstants.CENTER);
+        lvlLabel.setFont(pixelMplus);
+
         // Add a button to the south to re-start the game
         btnNewGame.setFont(pixelMplus);
-        btnNewGame.setPreferredSize(new Dimension(150, 40));
-
-        JPanel flowPanel = new JPanel(new FlowLayout());
-        JPanel gridPanel = new JPanel(new GridLayout(0, 1, 10, 10));
-        gridPanel.add(btnNewGame);
+        btnNewGame.setPreferredSize(new Dimension(150, 30));
+        btnShowAnswer.setFont(pixelMplus);
+        btnShowAnswer.setPreferredSize(new Dimension(150, 30));
 
         // Restart Game
         btnNewGame.addActionListener(e -> {
             cp.dispose(); // Close the window
             startMenu.dispose();
+            TimeManagement.resetTimer();
             SudokuMain sudoku = new SudokuMain();
         });
 
-        // Timer
-        task = new TimerTask() {
-            public void run() {
-                secondPassed++;
-                timerDisplay.setText(String.format("%02d:%02d", secondPassed / 60, secondPassed % 60));
+        // Instant Solve
+        btnShowAnswer.addActionListener(e -> {
+            if (!board.isSolved()) {
+                board.solvePuzzle();
+            } else {
+                JOptionPane.showMessageDialog(null, "You have already solved");
             }
-        };
+        });
 
-        timerDisplay.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 30));
+        gridPanel.add(lvlLabel);
+        gridPanel.add(TimeManagement.timerDisplay);
+        gridPanel.add(btnNewGame);
+        gridPanel.add(btnShowAnswer);
 
-        gridPanel.add(timerDisplay);
         flowPanel.add(gridPanel);
         cp.add(flowPanel, BorderLayout.EAST);
-
-        // board.init();
 
         pack(); // Pack the UI components, instead of setSize()
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Handle window closing
@@ -141,7 +163,7 @@ public class SudokuMain extends JFrame {
             String btnLabel = evt.getActionCommand();
             startMenu.setVisible(false);
             cp.setVisible(true);
-            startTimer(); // start timer
+            TimeManagement.startTimer(); // start timer
 
             // All the different method according to the level
             // chosen!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -150,15 +172,18 @@ public class SudokuMain extends JFrame {
             // the harder, the lesser cell to show
             if (btnLabel.equals("Easy")) {
                 board.init(random.nextInt(6) + 70);
+                lvlLabel.setText("Difficulty: Easy");
+
             } else if (btnLabel.equals("Medium")) {
                 board.init(random.nextInt(6) + 45);
+                lvlLabel.setText("Difficulty: Medium");
+
             } else {
                 board.init(random.nextInt(6) + 20);
+                lvlLabel.setText("Difficulty: Hard");
+
             }
         }
     }
 
-    public void startTimer() {
-        timer.scheduleAtFixedRate(task, 1000, 1000);
-    };
 }
