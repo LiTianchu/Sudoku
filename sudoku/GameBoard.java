@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.Time;
 import java.util.EventListener;
+import java.util.Random;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -25,6 +26,7 @@ public class GameBoard extends JPanel {
 
    private int rowCount = 0;
    private int colCount = 0;
+   
 
    // Constructor
    public GameBoard() {
@@ -89,22 +91,19 @@ public class GameBoard extends JPanel {
     */
    public void init(int numToShow) {
 
+     
       // Get a new puzzle
       puzzle.newPuzzle(numToShow);
 
       // Based on the puzzle, initialize all the cells.
-      for (int row = 0; row < GRID_SIZE; ++row) {
-         for (int col = 0; col < GRID_SIZE; ++col) {
-            cells[row][col].init(puzzle.numbers[row][col], puzzle.isShown[row][col]);
-         }
-      }
+      initializeAllCells();
    }
 
    public void solvePuzzle() {
       for (int row = 0; row < GRID_SIZE; ++row) {
          for (int col = 0; col < GRID_SIZE; ++col) {
             if (cells[row][col].isEditable()) {
-               cells[row][col].status = CellStatus.SHOWN;
+               cells[row][col].status = CellStatus.REVEALED;
                cells[row][col].paint();
 
             }
@@ -112,6 +111,29 @@ public class GameBoard extends JPanel {
       }
 
       showCongrats();
+   }
+
+   public void initializeAllCells() {
+    
+      for (int row = 0; row < GRID_SIZE; ++row) {
+         for (int col = 0; col < GRID_SIZE; ++col) {
+            cells[row][col].init(puzzle.numbers[row][col], puzzle.isShown[row][col]);
+         }
+      }
+   }
+
+   public void Hint() {
+      boolean hinted = false;
+      for (int row = 0; row < GRID_SIZE; ++row) {
+         for (int col = 0; col < GRID_SIZE; ++col) {
+            if (cells[row][col].isEditable() && cells[row][col].status != CellStatus.CORRECT_GUESS && cells[row][col].status != CellStatus.REVEALED && !hinted) {
+               cells[row][col].status = CellStatus.REVEALED;
+               cells[row][col].paint();
+               hinted =true;
+            }
+         }
+      }
+
    }
 
    /*
@@ -131,6 +153,12 @@ public class GameBoard extends JPanel {
    }
 
    public void showCongrats() {
+      for (int row = 0; row < GRID_SIZE; ++row) {
+         for (int col = 0; col < GRID_SIZE; ++col) {
+            cells[row][col].status=CellStatus.SHOWN;
+            cells[row][col].paint();
+         }
+      }
       int timeSpent = TimeManagement.getTime();
       TimeManagement.stopTimer();
       JOptionPane.showMessageDialog(null, "Congratulation! Time Spend: " + timeSpent + " seconds");
