@@ -27,12 +27,14 @@ public class GameBoard extends JPanel {
    private int rowCount = 0;
    private int colCount = 0;
 
+   Music music = new Music();
+
    // Constructor
    public GameBoard() {
       super.setLayout(new GridLayout(SUBGRID_SIZE, SUBGRID_SIZE)); // JPanel
 
       for (int index = 0; index < 9; index++) { // Big Box has 9 mini boxes
-         SubBoard board = new SubBoard(rowCount, colCount);
+         SubBoard board = new SubBoard(rowCount, colCount, index);
 
          if (index == 2 || index == 5) {
             colCount = 0;
@@ -70,9 +72,15 @@ public class GameBoard extends JPanel {
    }
 
    public class SubBoard extends JPanel {
-      public SubBoard(int startRow, int startCol) {
+      public SubBoard(int startRow, int startCol, int index) {
          setLayout(new GridLayout(SUBGRID_SIZE, SUBGRID_SIZE));
          setBorder(new LineBorder(Color.black, 1));
+
+         if (index % 2 == 1) {
+            setBackground(SudokuMain.skyblue);
+         } else {
+            setBackground(Color.white);
+         }
 
          for (int row = startRow; row < startRow + 3; row++) {
             for (int col = startCol; col < startCol + 3; col++) {
@@ -98,7 +106,7 @@ public class GameBoard extends JPanel {
    }
 
    // public void restart(String difficulty){
-   //    new GamePanel(this, "Difficulty: Medium");
+   // new GamePanel(this, "Difficulty: Medium");
    // }
 
    public void solvePuzzle() {
@@ -162,12 +170,22 @@ public class GameBoard extends JPanel {
             cells[row][col].paint();
          }
       }
+      music.stopMusic();
+      music.playCongratMusic();
+
+      new java.util.Timer().schedule(
+            new java.util.TimerTask() {
+               @Override
+               public void run() {
+                  music.playMusic();
+               }
+            },
+            8000);
+
       int timeSpent = TimeManagement.getTime();
       TimeManagement.stopTimer();
       JOptionPane.showMessageDialog(null, "Congratulation! Time Spend: " + timeSpent + " seconds");
    }
-
-  
 
    private class AddKeyListener implements KeyListener {
       @Override
