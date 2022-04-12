@@ -26,7 +26,6 @@ public class GameBoard extends JPanel {
 
    private int rowCount = 0;
    private int colCount = 0;
-   
 
    // Constructor
    public GameBoard() {
@@ -91,7 +90,6 @@ public class GameBoard extends JPanel {
     */
    public void init(int numToShow) {
 
-     
       // Get a new puzzle
       puzzle.newPuzzle(numToShow);
 
@@ -114,7 +112,7 @@ public class GameBoard extends JPanel {
    }
 
    public void initializeAllCells() {
-    
+
       for (int row = 0; row < GRID_SIZE; ++row) {
          for (int col = 0; col < GRID_SIZE; ++col) {
             cells[row][col].init(puzzle.numbers[row][col], puzzle.isShown[row][col]);
@@ -126,10 +124,11 @@ public class GameBoard extends JPanel {
       boolean hinted = false;
       for (int row = 0; row < GRID_SIZE; ++row) {
          for (int col = 0; col < GRID_SIZE; ++col) {
-            if (cells[row][col].isEditable() && cells[row][col].status != CellStatus.CORRECT_GUESS && cells[row][col].status != CellStatus.REVEALED && !hinted) {
+            if (cells[row][col].isEditable() && cells[row][col].status != CellStatus.CORRECT_GUESS
+                  && cells[row][col].status != CellStatus.REVEALED && !hinted) {
                cells[row][col].status = CellStatus.REVEALED;
                cells[row][col].paint();
-               hinted =true;
+               hinted = true;
             }
          }
       }
@@ -155,7 +154,7 @@ public class GameBoard extends JPanel {
    public void showCongrats() {
       for (int row = 0; row < GRID_SIZE; ++row) {
          for (int col = 0; col < GRID_SIZE; ++col) {
-            cells[row][col].status=CellStatus.SHOWN;
+            cells[row][col].status = CellStatus.SHOWN;
             cells[row][col].paint();
          }
       }
@@ -164,47 +163,7 @@ public class GameBoard extends JPanel {
       JOptionPane.showMessageDialog(null, "Congratulation! Time Spend: " + timeSpent + " seconds");
    }
 
-   // private class CellInputListener implements ActionListener {
-   // @Override
-   // public void actionPerformed(ActionEvent e) {
-   // // Get a reference of the JTextField that triggers this action event
-   // Cell sourceCell = (Cell) e.getSource();
-   // int numberIn = -1;
-
-   // // Retrieve the int entered
-   // if (sourceCell.getText().isEmpty()) {
-   // numberIn = 0;
-   // } else {
-   // numberIn = Integer.parseInt(sourceCell.getText());
-   // }
-
-   // // For debugging
-   // // System.out.println("You entered " + numberIn);
-
-   // /*
-   // * [TODO 5]
-   // * Check the numberIn against sourceCell.number.
-   // * Update the cell status sourceCell.status,
-   // * and re-paint the cell via sourceCell.paint().
-   // */
-   // if (numberIn == sourceCell.number) {
-   // sourceCell.status = CellStatus.CORRECT_GUESS;
-   // } else if (numberIn == 0) {
-   // sourceCell.status = CellStatus.NO_GUESS;
-   // } else {
-   // sourceCell.status = CellStatus.WRONG_GUESS;
-   // }
-   // sourceCell.paint();
-
-   // /*
-   // * [TODO 6][Later] Check if the player has solved the puzzle after this move,
-   // * by call isSolved(). Put up a congratulation JOptionPane, if so.
-   // */
-   // if (isSolved()) {
-   // JOptionPane.showMessageDialog(null, "Congratulation!");
-   // }
-   // }
-   // }
+  
 
    private class AddKeyListener implements KeyListener {
       @Override
@@ -217,6 +176,11 @@ public class GameBoard extends JPanel {
             sourceCell.setText("");
             numberIn = ke.getKeyChar() - 48;
 
+            // * [TODO 5]
+            // * Check the numberIn against sourceCell.number.
+            // * Update the cell status sourceCell.status,
+            // * and re-paint the cell via sourceCell.paint().
+            // */
             if (numberIn == sourceCell.number) {
                sourceCell.status = CellStatus.CORRECT_GUESS;
             } else if (numberIn == 0) {
@@ -226,6 +190,9 @@ public class GameBoard extends JPanel {
             }
             sourceCell.paint();
 
+            // * [TODO 6][Later] Check if the player has solved the puzzle after this move,
+            // * by call isSolved(). Put up a congratulation JOptionPane, if so.
+            // */
             if (isSolved()) {
 
                showCongrats();
