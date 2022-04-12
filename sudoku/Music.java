@@ -12,9 +12,9 @@ import javax.swing.JOptionPane;
 public class Music {
     File file;
     public Music() {
-        file = new File("sudoku/Music.wav");
+        file = new File(getClass().getResource("Music.wav").getPath());
 
-
+        
 
         // AudioPlayer MGP = AudioPlayer.player;
         // AudioStream BGM;
