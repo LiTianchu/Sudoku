@@ -1,5 +1,6 @@
 package sudoku;
 
+import java.awt.Color;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -26,13 +27,14 @@ public class TimeManagement {
         secondPassed++;
     }
 
-    public static void stopTimer() {
-        timer.cancel();
-        timer.purge();
-    }
-
     public static int getTime() {
         return secondPassed;
+    }
+
+    public static void stopTimer() {
+        timerDisplay.setForeground(Color.BLUE);
+        timer.cancel();
+        timer.purge();
     }
 
     public static void resetTimer() {

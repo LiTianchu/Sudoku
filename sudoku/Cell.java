@@ -12,6 +12,7 @@ public class Cell extends JTextField {
    public static final Color BG_NO_GUESS = Color.YELLOW;
    public static final Color BG_CORRECT_GUESS = new Color(0, 216, 0); // RGB
    public static final Color BG_WRONG_GUESS = new Color(216, 0, 0);
+   public static final Color BG_REVEALED = new Color(102, 153, 255);
    public static final Font FONT_NUMBERS = new Font("Monospaced", Font.BOLD, 24);
 
    // All variables have package access
@@ -57,6 +58,12 @@ public class Cell extends JTextField {
          super.setEditable(true);
          super.setBackground(BG_WRONG_GUESS);
       }
+      else if (status == CellStatus.REVEALED) {
+         super.setEditable(true);
+         super.setBackground(BG_REVEALED);
+         super.setText(number + "");
+      }
    }
 
+ 
 }

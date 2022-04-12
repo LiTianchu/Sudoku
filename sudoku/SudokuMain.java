@@ -18,12 +18,16 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public class SudokuMain extends JFrame {
+    final String FONT_PATH = getClass().getResource("PixelMplus10-Regular.ttf").getPath();
+    final String ICON_PATH = getClass().getResource("icon.png").getPath();
     // private variables
     GameBoard board = new GameBoard();
     // Container cp = getContentPane(); // Container Sudoku
     JFrame cp = new JFrame("Suduko"); // Sudoku Menu
     JButton btnNewGame = new JButton("New Game");
     JButton btnShowAnswer = new JButton("Solve For Me");
+    JButton btnReset = new JButton("Reset");
+    JButton btnHint = new JButton("Hint(3/3)");
 
     // Start Menu
     JFrame startMenu = new JFrame("Suduko"); // Start Menu
@@ -48,16 +52,16 @@ public class SudokuMain extends JFrame {
     public SudokuMain() {
         // Load custom font
         try {
-            URL url = getClass().getResource("PixelMplus10-Regular.ttf");
-            pixelMplus = Font.createFont(Font.TRUETYPE_FONT, new File(url.getPath())).deriveFont(18f);
+
+            pixelMplus = Font.createFont(Font.TRUETYPE_FONT, new File(FONT_PATH)).deriveFont(18f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(
-                    Font.createFont(Font.TRUETYPE_FONT, new File(url.getPath())));
+                    Font.createFont(Font.TRUETYPE_FONT, new File(FONT_PATH)));
 
-            pixelMplusTitle = Font.createFont(Font.TRUETYPE_FONT, new File(url.getPath())).deriveFont(40f);
+            pixelMplusTitle = Font.createFont(Font.TRUETYPE_FONT, new File(FONT_PATH)).deriveFont(40f);
             GraphicsEnvironment ge2 = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge2.registerFont(
-                    Font.createFont(Font.TRUETYPE_FONT, new File(url.getPath())));
+                    Font.createFont(Font.TRUETYPE_FONT, new File(FONT_PATH)));
         } catch (IOException | FontFormatException e) {
 
         }
@@ -67,6 +71,7 @@ public class SudokuMain extends JFrame {
         // Title Panel
         JPanel title = new JPanel(new GridLayout(0, 1, 15, 5));
         JLabel label = new JLabel("SUDUKU", SwingConstants.CENTER);
+        ImageIcon sudokuIcon = new ImageIcon(ICON_PATH);
         label.setFont(pixelMplusTitle);
         label.setBorder(new EmptyBorder(40, 0, 0, 0));
         title.add(label);
@@ -84,6 +89,7 @@ public class SudokuMain extends JFrame {
         startMenu.add(title, BorderLayout.NORTH);
         startMenu.add(center, BorderLayout.CENTER);
         startMenu.setSize(400, 400);
+        startMenu.setIconImage(sudokuIcon.getImage());
         startMenu.setVisible(true);
 
         // Buttons Listener
@@ -115,11 +121,15 @@ public class SudokuMain extends JFrame {
         lvlLabel = new JLabel("Test", SwingConstants.CENTER);
         lvlLabel.setFont(pixelMplus);
 
-        // Add a button to the south to re-start the game
+        // Set attributes of the buttons
         btnNewGame.setFont(pixelMplus);
         btnNewGame.setPreferredSize(new Dimension(150, 30));
         btnShowAnswer.setFont(pixelMplus);
         btnShowAnswer.setPreferredSize(new Dimension(150, 30));
+        btnReset.setFont(pixelMplus);
+        btnReset.setPreferredSize(new Dimension(150, 30));
+        btnHint.setFont(pixelMplus);
+        btnHint.setPreferredSize(new Dimension(150, 30));
 
         // Restart Game
         btnNewGame.addActionListener(e -> {
@@ -138,13 +148,34 @@ public class SudokuMain extends JFrame {
             }
         });
 
+        btnReset.addActionListener(e -> board.initializeAllCells());
+
+        btnHint.addActionListener(e -> {
+            int numOfHintsLeft = Integer.parseInt(btnHint.getText().substring(5, 6));
+            if (!board.isSolved() && numOfHintsLeft!=0) {
+                numOfHintsLeft--;
+                btnHint.setText("Hint("+numOfHintsLeft+"/3)");
+                board.Hint();
+                if(board.isSolved()){
+                    board.showCongrats();
+                }
+            } else if(board.isSolved()){
+                JOptionPane.showMessageDialog(null, "You have already solved");
+            }else{
+                JOptionPane.showMessageDialog(null, "You have used up all your hints");
+            }
+        });
+
         gridPanel.add(lvlLabel);
         gridPanel.add(TimeManagement.timerDisplay);
         gridPanel.add(btnNewGame);
         gridPanel.add(btnShowAnswer);
+        gridPanel.add(btnReset);
+        gridPanel.add(btnHint);
 
         flowPanel.add(gridPanel);
         cp.add(flowPanel, BorderLayout.EAST);
+        cp.setIconImage(sudokuIcon.getImage());
 
         pack(); // Pack the UI components, instead of setSize()
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Handle window closing
