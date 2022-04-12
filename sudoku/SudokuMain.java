@@ -116,15 +116,15 @@ public class SudokuMain extends JFrame {
             // the harder, the lesser cell to show
             if (btnLabel.equals("Easy")) {
                 board.init(random.nextInt(6) + 70);
-                new GamePanel(board, "Difficulty: Easy");
+                new GamePanel(board, "Easy");
 
             } else if (btnLabel.equals("Medium")) {
                 board.init(random.nextInt(6) + 45);
-                new GamePanel(board, "Difficulty: Easy");
+                new GamePanel(board, "Medium");
 
             } else {
                 board.init(random.nextInt(6) + 20);
-                new GamePanel(board, "Difficulty: Easy");
+                new GamePanel(board, "Hard");
             }
         }
     }

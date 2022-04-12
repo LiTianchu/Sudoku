@@ -42,7 +42,7 @@ public class TimeManagement {
         timer.purge();
         secondPassed = 0;
         timer = new Timer();
-        timerDisplay = new JLabel("00:00", SwingConstants.CENTER);
+        timerDisplay.setText("00:00");
         task = new TimerTask() {
             public void run() {
                 secondPassed++;
