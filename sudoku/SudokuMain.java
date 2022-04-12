@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public class SudokuMain extends JFrame {
-
     // private variables
     GameBoard board = new GameBoard();
 
@@ -23,6 +22,15 @@ public class SudokuMain extends JFrame {
     static Font pixelMplusTitle;
 
     static ImageIcon sudokuIcon;
+
+    // Color
+    static Color darkblue = new Color(79, 93, 117);
+    static Color darkerblue = new Color(45, 49, 66);
+    static Color skyblue = new Color(234, 244, 244);
+    static Color yellow = new Color(252, 163, 17);
+    static Color grey = new Color(229, 229, 229);
+    static Color myRed = new Color(255, 94, 91);
+    static Color orange = new Color(239, 131, 84);
 
     // Constructor
     public SudokuMain() {
@@ -46,7 +54,7 @@ public class SudokuMain extends JFrame {
         try {
             final String icon_path = getClass().getResource("icon.png").getPath();
             sudokuIcon = new ImageIcon(icon_path);
-           
+
             // cp.setIconImage(sudokuIcon.getImage());
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error on loading favicon", "Error", JOptionPane.ERROR_MESSAGE);
@@ -55,7 +63,7 @@ public class SudokuMain extends JFrame {
         // Start Menu-----------------------------------
         startMenu.setLayout(new BorderLayout());
         // Title Panel
-        JPanel title = new JPanel(new GridLayout(0, 1, 15, 5));
+        JPanel title = new JPanel(new GridLayout(0, 1, 30, 5));
         JLabel label = new JLabel("SUDOKU", SwingConstants.CENTER);
 
         label.setFont(pixelMplusTitle);
@@ -66,15 +74,25 @@ public class SudokuMain extends JFrame {
         easyBtn.setFont(pixelMplus);
         mediumBtn.setFont(pixelMplus);
         hardBtn.setFont(pixelMplus);
-        JPanel center = new JPanel(new GridLayout(0, 1, 10, 10));
+
+        easyBtn.setBackground(darkblue);
+        mediumBtn.setBackground(darkblue);
+        hardBtn.setBackground(darkblue);
+
+        easyBtn.setForeground(Color.white);
+        mediumBtn.setForeground(Color.white);
+        hardBtn.setForeground(Color.white);
+
+        JPanel center = new JPanel(new GridLayout(0, 1, 45, 10));
         center.add(easyBtn);
         center.add(mediumBtn);
         center.add(hardBtn);
         center.setBorder(new EmptyBorder(80, 80, 80, 80)); // top, left, btm, right
 
+        startMenu.setBackground(Color.white);
+
         startMenu.add(title, BorderLayout.NORTH);
         startMenu.add(center, BorderLayout.CENTER);
-        
 
         // Buttons Listener
         AllButtonsListener listener = new AllButtonsListener();

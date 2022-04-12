@@ -6,13 +6,13 @@ import javax.swing.JTextField;
 
 public class Cell extends JTextField {
    // Name-constants for JTextField's colors and fonts
-   public static final Color BG_SHOWN = new Color(240, 240, 240); // RGB
+   public static final Color BG_SHOWN = new Color(240, 240, 240); // RGB default
    public static final Color FG_SHOWN = Color.BLACK;
-   public static final Color FG_NOT_SHOWN = Color.GRAY;
-   public static final Color BG_NO_GUESS = Color.YELLOW;
-   public static final Color BG_CORRECT_GUESS = new Color(0, 216, 0); // RGB
-   public static final Color BG_WRONG_GUESS = new Color(216, 0, 0);
-   public static final Color BG_REVEALED = new Color(102, 153, 255);
+   public static final Color FG_NOT_SHOWN = Color.BLACK;
+   public static final Color BG_NO_GUESS = new Color(255, 238, 50); // RGB Yellow
+   public static final Color BG_CORRECT_GUESS = new Color(107, 144, 128); // RGB Green
+   public static final Color BG_WRONG_GUESS = new Color(255, 94, 91); // red
+   public static final Color BG_REVEALED = new Color(216, 216, 216); // grey
    public static final Font FONT_NUMBERS = new Font("Monospaced", Font.BOLD, 24);
 
    // All variables have package access
@@ -45,25 +45,31 @@ public class Cell extends JTextField {
          super.setEditable(false);
          super.setBackground(BG_SHOWN);
          super.setForeground(FG_SHOWN);
+         super.setOpaque(false);
+
       } else if (status == CellStatus.NO_GUESS) {
          // Inherited from JTextField: Set display properties
          super.setText("");
          super.setEditable(true);
-         super.setBackground(BG_NO_GUESS);
-         super.setForeground(FG_NOT_SHOWN);
+         // super.setBackground(BG_NO_GUESS);
+         // super.setForeground(FG_NOT_SHOWN);
+         super.setOpaque(false);
+
       } else if (status == CellStatus.CORRECT_GUESS) {
          super.setEditable(true);
+         super.setOpaque(true);
          super.setBackground(BG_CORRECT_GUESS);
+
       } else if (status == CellStatus.WRONG_GUESS) {
          super.setEditable(true);
+         super.setOpaque(true);
          super.setBackground(BG_WRONG_GUESS);
-      }
-      else if (status == CellStatus.REVEALED) {
+
+      } else if (status == CellStatus.REVEALED) {
          super.setEditable(true);
+         super.setOpaque(true);
          super.setBackground(BG_REVEALED);
          super.setText(number + "");
       }
    }
-
- 
 }

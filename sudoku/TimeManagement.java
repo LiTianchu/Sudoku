@@ -32,7 +32,7 @@ public class TimeManagement {
     }
 
     public static void stopTimer() {
-        timerDisplay.setForeground(Color.BLUE);
+        // timerDisplay.setForeground(Color.BLUE);
         timer.cancel();
         timer.purge();
     }
