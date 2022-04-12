@@ -50,7 +50,7 @@ public class GamePanel extends JFrame {
         btnNewGame.addActionListener(e -> {
             this.dispose(); // Close the window
 
-            TimeManagement.resetTimer();
+            TimeManager.resetTimer();
             SudokuMain sudoku = new SudokuMain();
         });
 
@@ -94,29 +94,30 @@ public class GamePanel extends JFrame {
 
         btnRestart.addActionListener(e -> {
 
-            int input = JOptionPane.showConfirmDialog(null, "Do you want to restart?");
+            int input = JOptionPane.showConfirmDialog(null, "Do you want to restart?", 
+            "Restart Confirmation", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
 
             if(input==0){ //0 for yes
 
                 new GamePanel(board, labelText);
                 board.initializeAllCells();
-                TimeManagement.resetTimer();
-                TimeManagement.startTimer();
+                TimeManager.resetTimer();
+                TimeManager.startTimer();
                 this.dispose();
             }
 
         });
 
         gridPanel.setBorder(new EmptyBorder(5, 20, 0, 20));
-        TimeManagement.timerDisplay.setFont(new Font("Monospaced", Font.BOLD, 40));
+        TimeManager.timerDisplay.setFont(new Font("Monospaced", Font.BOLD, 40));
 
         // Level Label
         lvlLabel = new JLabel("Difficulty: " + labelText, SwingConstants.CENTER);
         lvlLabel.setFont(SudokuMain.pixelMplus);
-        lvlLabel.setForeground(Color.BLUE);
+        lvlLabel.setForeground(SudokuMain.darkblue);
         
         gridPanel.add(lvlLabel);
-        gridPanel.add(TimeManagement.timerDisplay);
+        gridPanel.add(TimeManager.timerDisplay);
         gridPanel.add(btnNewGame);
         gridPanel.add(btnShowAnswer);
         gridPanel.add(btnReset);

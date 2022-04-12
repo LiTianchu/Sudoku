@@ -7,7 +7,7 @@ import java.util.TimerTask;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-public class TimeManagement {
+public class TimeManager {
     public static int secondPassed = 0;
     public static Timer timer = new Timer();
     public static JLabel timerDisplay = new JLabel("00:00", SwingConstants.CENTER);

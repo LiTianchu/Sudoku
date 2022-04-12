@@ -164,12 +164,12 @@ public class GameBoard extends JPanel {
    }
 
    public void showCongrats() {
-      for (int row = 0; row < GRID_SIZE; ++row) {
-         for (int col = 0; col < GRID_SIZE; ++col) {
-            cells[row][col].status = CellStatus.SHOWN;
-            cells[row][col].paint();
-         }
-      }
+      // for (int row = 0; row < GRID_SIZE; ++row) {
+      //    for (int col = 0; col < GRID_SIZE; ++col) {
+      //       cells[row][col].status = CellStatus.SHOWN;
+      //       cells[row][col].paint();
+      //    }
+      // }
       music.stopMusic();
       music.playCongratMusic();
 
@@ -182,8 +182,8 @@ public class GameBoard extends JPanel {
             },
             8000);
 
-      int timeSpent = TimeManagement.getTime();
-      TimeManagement.stopTimer();
+      int timeSpent = TimeManager.getTime();
+      TimeManager.stopTimer();
       JOptionPane.showMessageDialog(null, "Congratulation! Time Spend: " + timeSpent + " seconds");
    }
 
@@ -193,7 +193,7 @@ public class GameBoard extends JPanel {
          Cell sourceCell = (Cell) ke.getSource();
          int numberIn = -1;
 
-         if (ke.getKeyChar() >= '1' && ke.getKeyChar() <= '9') {
+         if (ke.getKeyChar() >= '1' && ke.getKeyChar() <= '9' && sourceCell.isEditable()) {
             sourceCell.setEditable(true);
             sourceCell.setText("");
             numberIn = ke.getKeyChar() - 48;

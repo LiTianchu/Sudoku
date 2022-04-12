@@ -9,10 +9,10 @@ public class Cell extends JTextField {
    public static final Color BG_SHOWN = new Color(240, 240, 240); // RGB default
    public static final Color FG_SHOWN = Color.BLACK;
    public static final Color FG_NOT_SHOWN = Color.BLACK;
-   public static final Color BG_NO_GUESS = new Color(255, 238, 50); // RGB Yellow
+   public static final Color BG_NO_GUESS = new Color(255, 255, 230); // RGB light grey
    public static final Color BG_CORRECT_GUESS = new Color(107, 144, 128); // RGB Green
    public static final Color BG_WRONG_GUESS = new Color(255, 94, 91); // red
-   public static final Color BG_REVEALED = new Color(216, 216, 216); // grey
+   public static final Color BG_REVEALED = new Color(230, 242, 255); // light blue
    public static final Font FONT_NUMBERS = new Font("Monospaced", Font.BOLD, 24);
 
    // All variables have package access
@@ -51,9 +51,9 @@ public class Cell extends JTextField {
          // Inherited from JTextField: Set display properties
          super.setText("");
          super.setEditable(true);
-         // super.setBackground(BG_NO_GUESS);
-         // super.setForeground(FG_NOT_SHOWN);
-         super.setOpaque(false);
+         super.setBackground(BG_NO_GUESS);
+         super.setForeground(FG_NOT_SHOWN);
+         super.setOpaque(true);
 
       } else if (status == CellStatus.CORRECT_GUESS) {
          super.setEditable(true);
@@ -66,7 +66,7 @@ public class Cell extends JTextField {
          super.setBackground(BG_WRONG_GUESS);
 
       } else if (status == CellStatus.REVEALED) {
-         super.setEditable(true);
+         super.setEditable(false);
          super.setOpaque(true);
          super.setBackground(BG_REVEALED);
          super.setText(number + "");
