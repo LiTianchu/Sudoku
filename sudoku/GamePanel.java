@@ -95,7 +95,9 @@ public class GamePanel extends JFrame {
         btnRestart.addActionListener(e -> {
 
             int input = JOptionPane.showConfirmDialog(null, "Do you want to restart?");
-            if (input == 0) {
+
+            if(input==0){ //0 for yes
+
                 new GamePanel(board, labelText);
                 board.initializeAllCells();
                 TimeManagement.resetTimer();
@@ -112,6 +114,7 @@ public class GamePanel extends JFrame {
         lvlLabel = new JLabel("Difficulty: " + labelText, SwingConstants.CENTER);
         lvlLabel.setFont(SudokuMain.pixelMplus);
         lvlLabel.setForeground(Color.BLUE);
+        
         gridPanel.add(lvlLabel);
         gridPanel.add(TimeManagement.timerDisplay);
         gridPanel.add(btnNewGame);
