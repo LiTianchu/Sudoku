@@ -97,7 +97,10 @@ public class SudokuMain extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                Music music = new Music();
+                music.playMusic();
                 SudokuMain sudokuMain = new SudokuMain();
+
             }
         });
     }
