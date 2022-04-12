@@ -56,7 +56,7 @@ public class SudokuMain extends JFrame {
         startMenu.setLayout(new BorderLayout());
         // Title Panel
         JPanel title = new JPanel(new GridLayout(0, 1, 15, 5));
-        JLabel label = new JLabel("SUDUKU", SwingConstants.CENTER);
+        JLabel label = new JLabel("SUDOKU", SwingConstants.CENTER);
 
         label.setFont(pixelMplusTitle);
         label.setBorder(new EmptyBorder(40, 0, 0, 0));
