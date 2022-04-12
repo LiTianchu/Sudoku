@@ -97,6 +97,10 @@ public class GameBoard extends JPanel {
       initializeAllCells();
    }
 
+   // public void restart(String difficulty){
+   //    new GamePanel(this, "Difficulty: Medium");
+   // }
+
    public void solvePuzzle() {
       for (int row = 0; row < GRID_SIZE; ++row) {
          for (int col = 0; col < GRID_SIZE; ++col) {
