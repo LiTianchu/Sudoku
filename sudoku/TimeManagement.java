@@ -1,4 +1,5 @@
 package sudoku;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,11 +22,11 @@ public class TimeManagement {
         timer.scheduleAtFixedRate(task, 1000, 1000);
     }
 
-    public static void incrementTime(){
+    public static void incrementTime() {
         secondPassed++;
     }
 
-    public static void stopTimer(){
+    public static void stopTimer() {
         timer.cancel();
         timer.purge();
     }
@@ -34,10 +35,10 @@ public class TimeManagement {
         return secondPassed;
     }
 
-    public static void resetTimer(){
+    public static void resetTimer() {
         timer.cancel();
         timer.purge();
-        secondPassed=0;
+        secondPassed = 0;
         timer = new Timer();
         timerDisplay = new JLabel("00:00", SwingConstants.CENTER);
         task = new TimerTask() {
