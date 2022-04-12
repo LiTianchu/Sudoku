@@ -134,7 +134,7 @@ public class GameBoard extends JPanel {
    public void showCongrats(){
       int timeSpent = TimeManagement.getTime();
       TimeManagement.stopTimer();
-      JOptionPane.showMessageDialog(null, "Congratulation! Time Spend: " + timeSpent);
+      JOptionPane.showMessageDialog(null, "Congratulation! Time Spend: " + timeSpent +" seconds");
    }
 
    // private class CellInputListener implements ActionListener {
