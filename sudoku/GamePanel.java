@@ -8,7 +8,7 @@ public class GamePanel extends JFrame {
     Container gameContainer = getContentPane();
     JButton btnNewGame = new JButton("New Game");
     JButton btnShowAnswer = new JButton("Solve For Me");
-    JButton btnReset = new JButton("Reset");
+    JButton btnReset = new JButton("Reset Cells");
     JButton btnHint = new JButton("Hint(3/3)");
     JButton btnRestart = new JButton("Restart");
     JLabel lvlLabel;
