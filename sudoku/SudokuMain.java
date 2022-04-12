@@ -3,67 +3,53 @@ package sudoku;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-//import java.io.FileInputStream;
-import java.io.IOException;
-//import java.io.InputStream;
-import java.net.URL;
-//import java.sql.Time;
-//import java.util.TimerTask;
 import java.util.Random;
-//import java.util.Timer;
-
-import javax.sound.sampled.*;
 import javax.swing.*;
-//import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
 public class SudokuMain extends JFrame {
-    final String FONT_PATH = getClass().getResource("PixelMplus10-Regular.ttf").getPath();
-    final String ICON_PATH = getClass().getResource("icon.png").getPath();
+
     // private variables
     GameBoard board = new GameBoard();
-    // Container cp = getContentPane(); // Container Sudoku
-    JFrame cp = new JFrame("Suduko"); // Sudoku Menu
-    JButton btnNewGame = new JButton("New Game");
-    JButton btnShowAnswer = new JButton("Solve For Me");
-    JButton btnReset = new JButton("Reset");
-    JButton btnHint = new JButton("Hint(3/3)");
 
     // Start Menu
-    JFrame startMenu = new JFrame("Suduko"); // Start Menu
+    Container startMenu = getContentPane(); // Start Menu
     JButton easyBtn = new JButton("Easy");
     JButton mediumBtn = new JButton("Medium");
     JButton hardBtn = new JButton("Hard");
 
     // Custom fonts
-    Font pixelMplus;
-    Font pixelMplusTitle;
+    static Font pixelMplus;
+    static Font pixelMplusTitle;
 
-    // Level Label
-    JLabel lvlLabel;
-
-    // Timer
-    // Timer timer = new Timer();
-    // TimerTask task;
-    // int secondPassed = 0;
-    // JLabel timerDisplay = new JLabel("00:00", SwingConstants.CENTER);
+    static ImageIcon sudokuIcon;
 
     // Constructor
     public SudokuMain() {
         // Load custom font
         try {
+            String font_path = getClass().getResource("PixelMplus10-Regular.ttf").getPath();
 
-            pixelMplus = Font.createFont(Font.TRUETYPE_FONT, new File(FONT_PATH)).deriveFont(18f);
+            pixelMplus = Font.createFont(Font.TRUETYPE_FONT, new File(font_path)).deriveFont(18f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(
-                    Font.createFont(Font.TRUETYPE_FONT, new File(FONT_PATH)));
+                    Font.createFont(Font.TRUETYPE_FONT, new File(font_path)));
 
-            pixelMplusTitle = Font.createFont(Font.TRUETYPE_FONT, new File(FONT_PATH)).deriveFont(40f);
+            pixelMplusTitle = Font.createFont(Font.TRUETYPE_FONT, new File(font_path)).deriveFont(40f);
             GraphicsEnvironment ge2 = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge2.registerFont(
-                    Font.createFont(Font.TRUETYPE_FONT, new File(FONT_PATH)));
-        } catch (IOException | FontFormatException e) {
+                    Font.createFont(Font.TRUETYPE_FONT, new File(font_path)));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error on loading the font type", "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
+        try {
+            final String icon_path = getClass().getResource("icon.png").getPath();
+            sudokuIcon = new ImageIcon(icon_path);
+           
+            // cp.setIconImage(sudokuIcon.getImage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error on loading favicon", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
         // Start Menu-----------------------------------
@@ -71,7 +57,7 @@ public class SudokuMain extends JFrame {
         // Title Panel
         JPanel title = new JPanel(new GridLayout(0, 1, 15, 5));
         JLabel label = new JLabel("SUDUKU", SwingConstants.CENTER);
-        ImageIcon sudokuIcon = new ImageIcon(ICON_PATH);
+
         label.setFont(pixelMplusTitle);
         label.setBorder(new EmptyBorder(40, 0, 0, 0));
         title.add(label);
@@ -88,9 +74,7 @@ public class SudokuMain extends JFrame {
 
         startMenu.add(title, BorderLayout.NORTH);
         startMenu.add(center, BorderLayout.CENTER);
-        startMenu.setSize(400, 400);
-        startMenu.setIconImage(sudokuIcon.getImage());
-        startMenu.setVisible(true);
+        
 
         // Buttons Listener
         AllButtonsListener listener = new AllButtonsListener();
@@ -98,103 +82,14 @@ public class SudokuMain extends JFrame {
         mediumBtn.addActionListener(listener);
         hardBtn.addActionListener(listener);
 
-        // Container Sudoku-----------------------------
-        cp.setLayout(new BorderLayout());
-        cp.add(board, BorderLayout.CENTER);
-
-        JPanel flowPanel = new JPanel(new FlowLayout());
-        JPanel gridPanel = new JPanel(new GridLayout(0, 1, 30, 10));
-        gridPanel.setBorder(new EmptyBorder(5, 20, 0, 20));
-
-        // Timer
-        // task = new TimerTask() {
-        // public void run() {
-        // secondPassed++;
-        // timerDisplay.setText(String.format("%02d:%02d", secondPassed / 60,
-        // secondPassed % 60));
-        // }
-        // };
-
-        TimeManagement.timerDisplay.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 45));
-
-        // Level Label
-        lvlLabel = new JLabel("Test", SwingConstants.CENTER);
-        lvlLabel.setFont(pixelMplus);
-
-        // Set attributes of the buttons
-        btnNewGame.setFont(pixelMplus);
-        btnNewGame.setPreferredSize(new Dimension(150, 30));
-        btnShowAnswer.setFont(pixelMplus);
-        btnShowAnswer.setPreferredSize(new Dimension(150, 30));
-        btnReset.setFont(pixelMplus);
-        btnReset.setPreferredSize(new Dimension(150, 30));
-        btnHint.setFont(pixelMplus);
-        btnHint.setPreferredSize(new Dimension(150, 30));
-
-        // Restart Game
-        btnNewGame.addActionListener(e -> {
-            cp.dispose(); // Close the window
-            startMenu.dispose();
-            TimeManagement.resetTimer();
-            SudokuMain sudoku = new SudokuMain();
-        });
-
-        // Instant Solve
-        btnShowAnswer.addActionListener(e -> {
-            if (!board.isSolved()) {
-                board.solvePuzzle();
-            } else {
-                JOptionPane.showMessageDialog(null, "You have already solved");
-            }
-        });
-
-        btnReset.addActionListener(e -> board.initializeAllCells());
-
-        btnHint.addActionListener(e -> {
-            int numOfHintsLeft = Integer.parseInt(btnHint.getText().substring(5, 6));
-            if (!board.isSolved() && numOfHintsLeft!=0) {
-                numOfHintsLeft--;
-                btnHint.setText("Hint("+numOfHintsLeft+"/3)");
-                board.Hint();
-                if(board.isSolved()){
-                    board.showCongrats();
-                }
-            } else if(board.isSolved()){
-                JOptionPane.showMessageDialog(null, "You have already solved");
-            }else{
-                JOptionPane.showMessageDialog(null, "You have used up all your hints");
-            }
-        });
-
-        gridPanel.add(lvlLabel);
-        gridPanel.add(TimeManagement.timerDisplay);
-        gridPanel.add(btnNewGame);
-        gridPanel.add(btnShowAnswer);
-        gridPanel.add(btnReset);
-        gridPanel.add(btnHint);
-
-        flowPanel.add(gridPanel);
-        cp.add(flowPanel, BorderLayout.EAST);
-        cp.setIconImage(sudokuIcon.getImage());
-
-        pack(); // Pack the UI components, instead of setSize()
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Handle window closing
+        setIconImage(sudokuIcon.getImage());
+        setSize(400, 400);
+        setVisible(true);
         setTitle("Sudoku");
-        cp.setSize(1000, 800);
-        cp.setVisible(false);
+        setLocationRelativeTo(null);// display at the center
+        setDefaultCloseOperation(EXIT_ON_CLOSE); // Handle window closing
+
     }
-
-    // public void playMusic(String path){
-    // File audioFile = new File("file.wav");
-    // URL musicUrl = getClass().getResource("/file.wav");
-    // AudioInputStream audioStream = AudioSystem.getAudioInputStream(musicUrl);
-    // AudioFormat format = audioStream.getFormat();
-
-    // DataLine.Info info = new DataLine.Info(Clip.class, format);
-    // Clip audioClip = (Clip) AudioSystem.getLine(info);
-    // audioClip.open(audioStream);
-    // audioClip.start();
-    // }
 
     /** The entry main() entry method */
     public static void main(String[] args) {
@@ -212,7 +107,6 @@ public class SudokuMain extends JFrame {
         public void actionPerformed(ActionEvent evt) {
             String btnLabel = evt.getActionCommand();
             startMenu.setVisible(false);
-            cp.setVisible(true);
             TimeManagement.startTimer(); // start timer
 
             // All the different method according to the level
@@ -222,16 +116,15 @@ public class SudokuMain extends JFrame {
             // the harder, the lesser cell to show
             if (btnLabel.equals("Easy")) {
                 board.init(random.nextInt(6) + 70);
-                lvlLabel.setText("Difficulty: Easy");
+                new GamePanel(board, "Difficulty: Easy");
 
             } else if (btnLabel.equals("Medium")) {
                 board.init(random.nextInt(6) + 45);
-                lvlLabel.setText("Difficulty: Medium");
+                new GamePanel(board, "Difficulty: Easy");
 
             } else {
                 board.init(random.nextInt(6) + 20);
-                lvlLabel.setText("Difficulty: Hard");
-
+                new GamePanel(board, "Difficulty: Easy");
             }
         }
     }
