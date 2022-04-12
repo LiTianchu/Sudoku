@@ -1,14 +1,19 @@
+package sudoku;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+//import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Time;
-import java.util.TimerTask;
+//import java.io.InputStream;
+import java.net.URL;
+//import java.sql.Time;
+//import java.util.TimerTask;
 import java.util.Random;
-import java.util.Timer;
+//import java.util.Timer;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
+//import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
 public class SudokuMain extends JFrame {
@@ -42,15 +47,16 @@ public class SudokuMain extends JFrame {
     public SudokuMain() {
         // Load custom font
         try {
-            pixelMplus = Font.createFont(Font.TRUETYPE_FONT, new File("PixelMplus10-Regular.ttf")).deriveFont(18f);
+            URL url = getClass().getResource("PixelMplus10-Regular.ttf");
+            pixelMplus = Font.createFont(Font.TRUETYPE_FONT, new File(url.getPath())).deriveFont(18f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(
-                    Font.createFont(Font.TRUETYPE_FONT, new File("PixelMplus10-Regular.ttf")));
+                    Font.createFont(Font.TRUETYPE_FONT, new File(url.getPath())));
 
-            pixelMplusTitle = Font.createFont(Font.TRUETYPE_FONT, new File("PixelMplus10-Regular.ttf")).deriveFont(40f);
+            pixelMplusTitle = Font.createFont(Font.TRUETYPE_FONT, new File(url.getPath())).deriveFont(40f);
             GraphicsEnvironment ge2 = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge2.registerFont(
-                    Font.createFont(Font.TRUETYPE_FONT, new File("PixelMplus10-Regular.ttf")));
+                    Font.createFont(Font.TRUETYPE_FONT, new File(url.getPath())));
         } catch (IOException | FontFormatException e) {
 
         }
@@ -59,7 +65,7 @@ public class SudokuMain extends JFrame {
         startMenu.setLayout(new BorderLayout());
         // Title Panel
         JPanel title = new JPanel(new GridLayout(0, 1, 15, 5));
-        JLabel label = new JLabel("SUDUKO", SwingConstants.CENTER);
+        JLabel label = new JLabel("SUDUKU", SwingConstants.CENTER);
         label.setFont(pixelMplusTitle);
         label.setBorder(new EmptyBorder(40, 0, 0, 0));
         title.add(label);
@@ -145,6 +151,18 @@ public class SudokuMain extends JFrame {
         cp.setSize(1000, 800);
         cp.setVisible(false);
     }
+
+//     public void playMusic(String path){
+//         File audioFile = new File("file.wav");
+//  URL musicUrl = getClass().getResource("/file.wav");
+//          AudioInputStream audioStream = AudioSystem.getAudioInputStream(musicUrl);
+//         AudioFormat format = audioStream.getFormat();
+ 
+// DataLine.Info info = new DataLine.Info(Clip.class, format);
+// Clip audioClip = (Clip) AudioSystem.getLine(info);
+// audioClip.open(audioStream);
+// audioClip.start();
+//     }
 
     /** The entry main() entry method */
     public static void main(String[] args) {
