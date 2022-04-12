@@ -56,31 +56,5 @@ public class Cell extends JTextField {
          super.setBackground(BG_WRONG_GUESS);
       }
    }
-   // private JTextField field;
-
-   // public Cell(JTextField field){
-   // this.field=field;
-   // }
-
-   // public void setNumber(int number){
-   // field.setText(number+"");
-   // }
-
-   // public JTextField getCell(){
-   // return field;
-   // }
-
-   // public void disableCell(){
-   // field.setEditable(false);
-
-   // }
-
-   // public void activateCell(){
-   // field.setEditable(true);
-   // }
-
-   // public void setCellSize(int width, int height){
-   // field.setSize(width, height);
-   // }
 
 }

@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.Time;
 import java.util.EventListener;
 
 import javax.swing.*;
@@ -22,6 +23,7 @@ public class GameBoard extends JPanel {
 
    private int rowCount = 0;
    private int colCount = 0;
+
 
    // Constructor
    public GameBoard() {
@@ -57,8 +59,7 @@ public class GameBoard extends JPanel {
          for (int col = 0; col < GRID_SIZE; ++col) {
             if (cells[row][col].isEditable()) {
                cells[row][col].addKeyListener(validateListener); // Validate input
-               // cells[row][col].addActionListener(listener); // For all editable rows and
-               // cols
+              
             }
          }
       }
@@ -73,7 +74,6 @@ public class GameBoard extends JPanel {
 
          for (int row = startRow; row < startRow + 3; row++) {
             for (int col = startCol; col < startCol + 3; col++) {
-               // System.out.println("row " + row + ", col " + col);
                cells[row][col] = new Cell(row, col);
                add(cells[row][col]); // JPanel
             }
@@ -87,6 +87,8 @@ public class GameBoard extends JPanel {
     * Call to start a new game.
     */
    public void init(int numToShow) {
+
+
       // Get a new puzzle
       puzzle.newPuzzle(numToShow);
 
@@ -96,6 +98,20 @@ public class GameBoard extends JPanel {
             cells[row][col].init(puzzle.numbers[row][col], puzzle.isShown[row][col]);
          }
       }
+   }
+
+   public void solvePuzzle(){
+      for (int row = 0; row < GRID_SIZE; ++row) {
+         for (int col = 0; col < GRID_SIZE; ++col) {
+            if (cells[row][col].isEditable()) {
+               cells[row][col].status = CellStatus.SHOWN;
+               cells[row][col].paint();
+            
+            }
+         }
+      }
+     
+     showCongrats();
    }
 
    /*
@@ -110,50 +126,57 @@ public class GameBoard extends JPanel {
             }
          }
       }
+      
       return true;
    }
 
-   private class CellInputListener implements ActionListener {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-         // Get a reference of the JTextField that triggers this action event
-         Cell sourceCell = (Cell) e.getSource();
-         int numberIn = -1;
-
-         // Retrieve the int entered
-         if (sourceCell.getText().isEmpty()) {
-            numberIn = 0;
-         } else {
-            numberIn = Integer.parseInt(sourceCell.getText());
-         }
-
-         // For debugging
-         System.out.println("You entered " + numberIn);
-
-         /*
-          * [TODO 5]
-          * Check the numberIn against sourceCell.number.
-          * Update the cell status sourceCell.status,
-          * and re-paint the cell via sourceCell.paint().
-          */
-         if (numberIn == sourceCell.number) {
-            sourceCell.status = CellStatus.CORRECT_GUESS;
-         } else if (numberIn == 0) {
-            sourceCell.status = CellStatus.NO_GUESS;
-         } else {
-            sourceCell.status = CellStatus.WRONG_GUESS;
-         }
-         sourceCell.paint();
-
-         /*
-          * [TODO 6][Later] Check if the player has solved the puzzle after this move,
-          * by call isSolved(). Put up a congratulation JOptionPane, if so.
-          */
-         if (isSolved()) {
-            JOptionPane.showMessageDialog(null, "Congratulation!");
-         }
-      }
+   public void showCongrats(){
+      int timeSpent = TimeManagement.getTime();
+      TimeManagement.stopTimer();
+      JOptionPane.showMessageDialog(null, "Congratulation! Time Spend: " + timeSpent);
    }
+
+   // private class CellInputListener implements ActionListener {
+   //    @Override
+   //    public void actionPerformed(ActionEvent e) {
+   //       // Get a reference of the JTextField that triggers this action event
+   //       Cell sourceCell = (Cell) e.getSource();
+   //       int numberIn = -1;
+
+   //       // Retrieve the int entered
+   //       if (sourceCell.getText().isEmpty()) {
+   //          numberIn = 0;
+   //       } else {
+   //          numberIn = Integer.parseInt(sourceCell.getText());
+   //       }
+
+   //       // For debugging
+   //       // System.out.println("You entered " + numberIn);
+
+   //       /*
+   //        * [TODO 5]
+   //        * Check the numberIn against sourceCell.number.
+   //        * Update the cell status sourceCell.status,
+   //        * and re-paint the cell via sourceCell.paint().
+   //        */
+   //       if (numberIn == sourceCell.number) {
+   //          sourceCell.status = CellStatus.CORRECT_GUESS;
+   //       } else if (numberIn == 0) {
+   //          sourceCell.status = CellStatus.NO_GUESS;
+   //       } else {
+   //          sourceCell.status = CellStatus.WRONG_GUESS;
+   //       }
+   //       sourceCell.paint();
+
+   //       /*
+   //        * [TODO 6][Later] Check if the player has solved the puzzle after this move,
+   //        * by call isSolved(). Put up a congratulation JOptionPane, if so.
+   //        */
+   //       if (isSolved()) {
+   //          JOptionPane.showMessageDialog(null, "Congratulation!");
+   //       }
+   //    }
+   // }
 
    private class AddKeyListener implements KeyListener {
       @Override
@@ -166,8 +189,6 @@ public class GameBoard extends JPanel {
             sourceCell.setText("");
             numberIn = ke.getKeyChar() - 48;
 
-            // For debugging
-            System.out.println("You entered " + numberIn);
 
             if (numberIn == sourceCell.number) {
                sourceCell.status = CellStatus.CORRECT_GUESS;
@@ -179,7 +200,8 @@ public class GameBoard extends JPanel {
             sourceCell.paint();
 
             if (isSolved()) {
-               JOptionPane.showMessageDialog(null, "Congratulation!");
+
+               showCongrats();
             }
 
          } else {
