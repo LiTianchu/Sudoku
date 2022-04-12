@@ -24,13 +24,13 @@ public class SudokuMain extends JFrame {
     static ImageIcon sudokuIcon;
 
     // Color
-    static Color darkblue = new Color(79, 93, 117);
-    static Color darkerblue = new Color(45, 49, 66);
-    static Color skyblue = new Color(234, 244, 244);
-    static Color yellow = new Color(252, 163, 17);
-    static Color grey = new Color(229, 229, 229);
-    static Color myRed = new Color(255, 94, 91);
-    static Color orange = new Color(239, 131, 84);
+    static final Color darkblue = new Color(79, 93, 117);
+    static final Color darkerblue = new Color(45, 49, 66);
+    static final Color skyblue = new Color(234, 244, 244);
+    static final Color yellow = new Color(252, 163, 17);
+    static final Color grey = new Color(229, 229, 229);
+    static final Color myRed = new Color(255, 94, 91);
+    static final Color orange = new Color(239, 131, 84);
 
     // Constructor
     public SudokuMain() {
@@ -128,7 +128,7 @@ public class SudokuMain extends JFrame {
         public void actionPerformed(ActionEvent evt) {
             String btnLabel = evt.getActionCommand();
             startMenu.setVisible(false);
-            TimeManagement.startTimer(); // start timer
+            TimeManager.startTimer(); // start timer
 
             // All the different method according to the level
             // chosen!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
