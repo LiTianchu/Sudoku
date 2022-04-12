@@ -5,17 +5,16 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public class GamePanel extends JFrame {
-    Container cp = getContentPane(); 
+    Container gameContainer = getContentPane(); 
     JButton btnNewGame = new JButton("New Game");
     JButton btnShowAnswer = new JButton("Solve For Me");
     JButton btnReset = new JButton("Reset");
     JButton btnHint = new JButton("Hint(3/3)");
-    JFrame startMenu;
     JLabel lvlLabel;
 
     public GamePanel(GameBoard board, String labelText) {
-        cp.setLayout(new BorderLayout());
-        cp.add(board, BorderLayout.CENTER);
+        gameContainer.setLayout(new BorderLayout());
+        gameContainer.add(board, BorderLayout.CENTER);
 
         // Set attributes of the buttons
         btnNewGame.setFont(SudokuMain.pixelMplus);
@@ -78,8 +77,8 @@ public class GamePanel extends JFrame {
         gridPanel.add(btnHint);
 
         flowPanel.add(gridPanel);
-        cp.add(flowPanel, BorderLayout.EAST);
-        
+        gameContainer.add(flowPanel, BorderLayout.EAST);
+
         setDefaultCloseOperation(EXIT_ON_CLOSE); // Handle window closing
         setTitle("Sudoku");
         setSize(1000, 800);
