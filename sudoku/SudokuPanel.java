@@ -12,6 +12,8 @@ public class SudokuPanel extends JFrame {
     private JButton btnHint = new JButton("Hint(3/3)");
     private JButton btnRestart = new JButton("Restart");
     private JLabel lvlLabel;
+    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
 
     public SudokuPanel(GameBoard board, String labelText) {
         gameContainer.setLayout(new BorderLayout());
@@ -67,10 +69,15 @@ public class SudokuPanel extends JFrame {
         gameContainer.add(flowPanel, BorderLayout.EAST);
 
         initializeListeners(board, labelText);
-        
-        setDefaultCloseOperation(EXIT_ON_CLOSE); // Handle window closing
-        setTitle("Sudoku");
+
         setSize(1000, 800);
+        int xCoordinate = (int) (screenSize.getWidth() - super.getWidth())/2; // center the window
+        int yCoordinate = (int) (screenSize.getHeight() - super.getHeight())/2;
+        setLocation(xCoordinate, yCoordinate);
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE); // Handle window closing
+        
+        setTitle("Sudoku");
         setVisible(true);
     }
 
