@@ -52,7 +52,7 @@ public class SudokuMain extends JFrame {
         }
 
         try {
-            final String icon_path = getClass().getResource("icon.png").getPath();
+            String icon_path = getClass().getResource("icon.png").getPath();
             sudokuIcon = new ImageIcon(icon_path);
 
             // cp.setIconImage(sudokuIcon.getImage());
