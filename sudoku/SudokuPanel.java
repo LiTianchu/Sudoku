@@ -4,7 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-public class GamePanel extends JFrame {
+public class SudokuPanel extends JFrame {
     Container gameContainer = getContentPane();
     JButton btnNewGame = new JButton("New Game");
     JButton btnShowAnswer = new JButton("Solve For Me");
@@ -13,7 +13,7 @@ public class GamePanel extends JFrame {
     JButton btnRestart = new JButton("Restart");
     JLabel lvlLabel;
 
-    public GamePanel(GameBoard board, String labelText) {
+    public SudokuPanel(GameBoard board, String labelText) {
         gameContainer.setLayout(new BorderLayout());
         gameContainer.add(board, BorderLayout.CENTER);
 
@@ -98,7 +98,7 @@ public class GamePanel extends JFrame {
 
             if(input==0){ //0 for yes
 
-                new GamePanel(board, labelText);
+                new SudokuPanel(board, labelText);
                 board.initializeAllCells(true);
                 TimeManager.resetTimer();
                 TimeManager.startTimer();
