@@ -9,13 +9,13 @@ import javax.swing.border.EmptyBorder;
 
 public class SudokuMain extends JFrame {
     // private variables
-    GameBoard board = new GameBoard();
+    private GameBoard board = new GameBoard();
 
     // Start Menu
-    Container startMenu = getContentPane(); // Start Menu
-    JButton easyBtn = new JButton("Easy");
-    JButton mediumBtn = new JButton("Medium");
-    JButton hardBtn = new JButton("Hard");
+    private Container startMenu = getContentPane(); // Start Menu
+    private JButton easyBtn = new JButton("Easy");
+    private JButton mediumBtn = new JButton("Medium");
+    private JButton hardBtn = new JButton("Hard");
 
     // Custom fonts
     static Font pixelMplus;

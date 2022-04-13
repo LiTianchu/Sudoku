@@ -5,13 +5,13 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public class SudokuPanel extends JFrame {
-    Container gameContainer = getContentPane();
-    JButton btnNewGame = new JButton("New Game");
-    JButton btnShowAnswer = new JButton("Solve For Me");
-    JButton btnReset = new JButton("Clear");
-    JButton btnHint = new JButton("Hint(3/3)");
-    JButton btnRestart = new JButton("Restart");
-    JLabel lvlLabel;
+    private Container gameContainer = getContentPane();
+    private JButton btnNewGame = new JButton("New Game");
+    private JButton btnShowAnswer = new JButton("Solve For Me");
+    private JButton btnReset = new JButton("Clear");
+    private JButton btnHint = new JButton("Hint(3/3)");
+    private JButton btnRestart = new JButton("Restart");
+    private JLabel lvlLabel;
 
     public SudokuPanel(GameBoard board, String labelText) {
         gameContainer.setLayout(new BorderLayout());
@@ -46,8 +46,37 @@ public class SudokuPanel extends JFrame {
         JPanel flowPanel = new JPanel(new FlowLayout());
         JPanel gridPanel = new JPanel(new GridLayout(0, 1, 50, 30));
         setIconImage(SudokuMain.sudokuIcon.getImage());
-        // Restart Game
-        btnNewGame.addActionListener(e -> {
+      
+        gridPanel.setBorder(new EmptyBorder(5, 20, 0, 20));
+        TimeManager.timerDisplay.setFont(new Font("Monospaced", Font.BOLD, 40));
+
+        // Level Label
+        lvlLabel = new JLabel("Difficulty: " + labelText, SwingConstants.CENTER);
+        lvlLabel.setFont(SudokuMain.pixelMplus);
+        lvlLabel.setForeground(SudokuMain.darkblue);
+        
+        gridPanel.add(lvlLabel);
+        gridPanel.add(TimeManager.timerDisplay);
+        gridPanel.add(btnNewGame);
+        gridPanel.add(btnShowAnswer);
+        gridPanel.add(btnReset);
+        gridPanel.add(btnHint);
+        gridPanel.add(btnRestart);
+
+        flowPanel.add(gridPanel);
+        gameContainer.add(flowPanel, BorderLayout.EAST);
+
+        initializeListeners(board, labelText);
+        
+        setDefaultCloseOperation(EXIT_ON_CLOSE); // Handle window closing
+        setTitle("Sudoku");
+        setSize(1000, 800);
+        setVisible(true);
+    }
+
+    public void initializeListeners(GameBoard board, String labelText){
+          // Restart Game
+          btnNewGame.addActionListener(e -> {
             this.dispose(); // Close the current window
             TimeManager.resetTimer(); 
             SudokuMain sudoku = new SudokuMain(); //restart from menu
@@ -107,29 +136,6 @@ public class SudokuPanel extends JFrame {
 
         });
 
-        gridPanel.setBorder(new EmptyBorder(5, 20, 0, 20));
-        TimeManager.timerDisplay.setFont(new Font("Monospaced", Font.BOLD, 40));
-
-        // Level Label
-        lvlLabel = new JLabel("Difficulty: " + labelText, SwingConstants.CENTER);
-        lvlLabel.setFont(SudokuMain.pixelMplus);
-        lvlLabel.setForeground(SudokuMain.darkblue);
-        
-        gridPanel.add(lvlLabel);
-        gridPanel.add(TimeManager.timerDisplay);
-        gridPanel.add(btnNewGame);
-        gridPanel.add(btnShowAnswer);
-        gridPanel.add(btnReset);
-        gridPanel.add(btnHint);
-        gridPanel.add(btnRestart);
-
-        flowPanel.add(gridPanel);
-        gameContainer.add(flowPanel, BorderLayout.EAST);
-
-        setDefaultCloseOperation(EXIT_ON_CLOSE); // Handle window closing
-        setTitle("Sudoku");
-        setSize(1000, 800);
-        setVisible(true);
     }
 
     public void displaySolvedMsg() {
