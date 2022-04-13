@@ -160,12 +160,19 @@ public class GameBoard extends JPanel {
                }
             },
             8000);
-
+      for (int row = 0; row < GRID_SIZE; ++row) {
+         for (int col = 0; col < GRID_SIZE; ++col) {
+            cells[row][col].status = CellStatus.SHOWN;
+            cells[row][col].paint();
+         }
+      }
       int timeSpent = TimeManager.getTime();
       TimeManager.stopTimer();
-      
-      JOptionPane.showMessageDialog(null, String.format("Congratulations! Time Spend: %dhours %dminutes and %dseconds", timeSpent / 60 / 60,  timeSpent/ 60 % 60,
-      timeSpent % 60));
+
+      JOptionPane.showMessageDialog(null,
+            String.format("Congratulations! Time Spend: %dhours %dminutes and %dseconds", timeSpent / 60 / 60,
+                  timeSpent / 60 % 60,
+                  timeSpent % 60));
    }
 
    // [TODO 2] Define a Listener Inner Class
