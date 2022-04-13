@@ -8,7 +8,7 @@ public class GamePanel extends JFrame {
     Container gameContainer = getContentPane();
     JButton btnNewGame = new JButton("New Game");
     JButton btnShowAnswer = new JButton("Solve For Me");
-    JButton btnReset = new JButton("Reset Cells");
+    JButton btnReset = new JButton("Clear");
     JButton btnHint = new JButton("Hint(3/3)");
     JButton btnRestart = new JButton("Restart");
     JLabel lvlLabel;
@@ -48,10 +48,9 @@ public class GamePanel extends JFrame {
         setIconImage(SudokuMain.sudokuIcon.getImage());
         // Restart Game
         btnNewGame.addActionListener(e -> {
-            this.dispose(); // Close the window
-
-            TimeManager.resetTimer();
-            SudokuMain sudoku = new SudokuMain();
+            this.dispose(); // Close the current window
+            TimeManager.resetTimer(); 
+            SudokuMain sudoku = new SudokuMain(); //restart from menu
         });
 
         // Instant Solve
@@ -65,7 +64,7 @@ public class GamePanel extends JFrame {
 
         btnReset.addActionListener(e -> {
             if (!board.isSolved()) {
-                board.initializeAllCells();
+                board.initializeAllCells(false);
             } else {
                 displaySolvedMsg();
             }
@@ -76,7 +75,7 @@ public class GamePanel extends JFrame {
             if (!board.isSolved() && numOfHintsLeft != 0) {
                 numOfHintsLeft--;
                 btnHint.setText("Hint(" + numOfHintsLeft + "/3)");
-                board.Hint();
+                board.hint();
                 if (board.isSolved()) {
                     board.showCongrats();
                 }
@@ -100,7 +99,7 @@ public class GamePanel extends JFrame {
             if(input==0){ //0 for yes
 
                 new GamePanel(board, labelText);
-                board.initializeAllCells();
+                board.initializeAllCells(true);
                 TimeManager.resetTimer();
                 TimeManager.startTimer();
                 this.dispose();

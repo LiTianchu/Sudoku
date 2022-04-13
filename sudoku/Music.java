@@ -1,11 +1,6 @@
 package sudoku;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-
 import javax.sound.sampled.*;
 import javax.swing.JOptionPane;
 
@@ -20,25 +15,6 @@ public class Music {
         file = new File("sudoku/Music.wav");
         congratFile = new File("sudoku/Congrat.wav");
 
-        // AudioPlayer MGP = AudioPlayer.player;
-        // AudioStream BGM;
-        // AudioData MD;
-        // ContinuousAudioDataStream loop = null;
-
-        // try {
-        // BGM = new AudioStream(new FileInputStream(MUSIC_PATH));
-        // System.out.println("bmg:" + BGM);
-        // System.out.println(MUSIC_PATH);
-
-        // MD = BGM.getData();
-        // loop = new ContinuousAudioDataStream(MD);
-
-        // } catch (IOException e) {
-        // System.out.println("eror");
-        // }
-
-        // MGP.start(loop);
-        // }
     }
 
     public void playMusic() {

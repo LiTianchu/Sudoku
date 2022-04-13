@@ -2,10 +2,6 @@ package sudoku;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.Time;
-import java.util.EventListener;
-import java.util.Random;
-
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
@@ -45,14 +41,6 @@ public class GameBoard extends JPanel {
          super.add(board);
       }
 
-      // Allocate the 2D array of Cell, and added into JPanel.
-      // for (int row = 0; row < GRID_SIZE; ++row) {
-      // for (int col = 0; col < GRID_SIZE; ++col) {
-      // cells[row][col] = new Cell(row, col);
-      // super.add(cells[row][col]); // JPanel
-      // }
-      // }
-
       // [TODO 3] Allocate a common listener as the ActionEvent listener for all the
       // Cells (JTextFields)
       // CellInputListener listener = new CellInputListener();
@@ -63,7 +51,6 @@ public class GameBoard extends JPanel {
          for (int col = 0; col < GRID_SIZE; ++col) {
             if (cells[row][col].isEditable()) {
                cells[row][col].addKeyListener(validateListener); // Validate input
-
             }
          }
       }
@@ -102,12 +89,8 @@ public class GameBoard extends JPanel {
       puzzle.newPuzzle(numToShow);
 
       // Based on the puzzle, initialize all the cells.
-      initializeAllCells();
+      initializeAllCells(true);
    }
-
-   // public void restart(String difficulty){
-   // new GamePanel(this, "Difficulty: Medium");
-   // }
 
    public void solvePuzzle() {
       for (int row = 0; row < GRID_SIZE; ++row) {
@@ -123,16 +106,19 @@ public class GameBoard extends JPanel {
       showCongrats();
    }
 
-   public void initializeAllCells() {
-
+   //method to initialize the cells
+   public void initializeAllCells(boolean resetAll) {
       for (int row = 0; row < GRID_SIZE; ++row) {
          for (int col = 0; col < GRID_SIZE; ++col) {
+            if(cells[row][col].isEditable() || resetAll){
             cells[row][col].init(puzzle.numbers[row][col], puzzle.isShown[row][col]);
+            }
          }
       }
    }
 
-   public void Hint() {
+   //method to reveal on cell when hint is pressed
+   public void hint() {
       boolean hinted = false;
       for (int row = 0; row < GRID_SIZE; ++row) {
          for (int col = 0; col < GRID_SIZE; ++col) {
@@ -144,7 +130,6 @@ public class GameBoard extends JPanel {
             }
          }
       }
-
    }
 
    /*
@@ -159,17 +144,11 @@ public class GameBoard extends JPanel {
             }
          }
       }
-
       return true;
    }
 
    public void showCongrats() {
-      // for (int row = 0; row < GRID_SIZE; ++row) {
-      //    for (int col = 0; col < GRID_SIZE; ++col) {
-      //       cells[row][col].status = CellStatus.SHOWN;
-      //       cells[row][col].paint();
-      //    }
-      // }
+  
       music.stopMusic();
       music.playCongratMusic();
 
@@ -187,6 +166,7 @@ public class GameBoard extends JPanel {
       JOptionPane.showMessageDialog(null, "Congratulation! Time Spend: " + timeSpent + " seconds");
    }
 
+   // [TODO 2] Define a Listener Inner Class
    private class AddKeyListener implements KeyListener {
       @Override
       public void keyPressed(KeyEvent ke) {
@@ -194,7 +174,6 @@ public class GameBoard extends JPanel {
          int numberIn = -1;
 
          if (ke.getKeyChar() >= '1' && ke.getKeyChar() <= '9' && sourceCell.isEditable()) {
-            sourceCell.setEditable(true);
             sourceCell.setText("");
             numberIn = ke.getKeyChar() - 48;
 
@@ -234,54 +213,5 @@ public class GameBoard extends JPanel {
       }
 
    }
-
-   // private JButton restartBtn;
-   // private JButton settingBtn;
-   // private JButton checkBtn;
-   // private int rowColNum;
-   // private int numOfCells;
-   // private int[] sdkNumbers;
-
-   // public GameBoard() {
-   // Container sdkContainer = getContentPane();
-   // sdkContainer.setLayout(new BorderLayout());
-
-   // JPanel topPanel = new JPanel(new FlowLayout());
-
-   // restartBtn = new JButton("Restart");
-   // settingBtn = new JButton("Setting");
-   // checkBtn = new JButton("Check");
-   // topPanel.add(restartBtn);
-   // topPanel.add(settingBtn);
-   // topPanel.add(checkBtn);
-   // sdkContainer.add(topPanel);
-
-   // setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-   // setSize(700, 620);
-   // setTitle("Sudoku Ver 1.0");
-   // setVisible(true);
-
-   // // numOfCells = (int) Math.pow(rowColNum, 2);
-   // // JPanel sdkGrids = new JPanel(new GridLayout(rowColNum, rowColNum));
-   // // for (int i = 0; i < numOfCells; i++) {
-
-   // // }
-
-   // // sdkContainer.add(sdkGrids);
-
-   // }
-
-   // public static void main(String[] args) {
-
-   // SwingUtilities.invokeLater(new Runnable() {
-   // @Override
-   // public void run() {
-   // GameBoard sdkGame = new GameBoard();
-   // Puzzle puzzle = new Puzzle(9);
-   // System.out.print(puzzle.generate());
-   // System.out.print("");
-   // }
-   // });
-   // }
 
 }
