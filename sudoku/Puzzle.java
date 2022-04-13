@@ -8,12 +8,11 @@ public class Puzzle {
     // All variables have package access
     int[][] numbers = new int[GameBoard.GRID_SIZE][GameBoard.GRID_SIZE];
     int[][][] availableNumEachGrid = new int[GameBoard.GRID_SIZE][GameBoard.GRID_SIZE][9];
-
     int[][] shownNums = new int[GameBoard.GRID_SIZE][GameBoard.GRID_SIZE];
     boolean[][] isShown = new boolean[GameBoard.GRID_SIZE][GameBoard.GRID_SIZE];
 
-    //random number generator
-    Random random = new Random();
+    //random number generator for the puzzle
+    private Random random = new Random();
 
     // Constructor
     public Puzzle() {

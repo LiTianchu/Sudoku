@@ -23,7 +23,7 @@ public class GameBoard extends JPanel {
    private int rowCount = 0;
    private int colCount = 0;
 
-   Music music = new Music();
+   private Music music = new Music();
 
    // Constructor
    public GameBoard() {
@@ -106,18 +106,18 @@ public class GameBoard extends JPanel {
       showCongrats();
    }
 
-   //method to initialize the cells
+   // method to initialize the cells
    public void initializeAllCells(boolean resetAll) {
       for (int row = 0; row < GRID_SIZE; ++row) {
          for (int col = 0; col < GRID_SIZE; ++col) {
-            if(cells[row][col].isEditable() || resetAll){
-            cells[row][col].init(puzzle.numbers[row][col], puzzle.isShown[row][col]);
+            if (cells[row][col].isEditable() || resetAll) {
+               cells[row][col].init(puzzle.numbers[row][col], puzzle.isShown[row][col]);
             }
          }
       }
    }
 
-   //method to reveal on cell when hint is pressed
+   // method to reveal on cell when hint is pressed
    public void hint() {
       boolean hinted = false;
       for (int row = 0; row < GRID_SIZE; ++row) {
@@ -148,7 +148,7 @@ public class GameBoard extends JPanel {
    }
 
    public void showCongrats() {
-  
+
       music.stopMusic();
       music.playCongratMusic();
 
@@ -163,7 +163,9 @@ public class GameBoard extends JPanel {
 
       int timeSpent = TimeManager.getTime();
       TimeManager.stopTimer();
-      JOptionPane.showMessageDialog(null, "Congratulation! Time Spend: " + timeSpent + " seconds");
+      
+      JOptionPane.showMessageDialog(null, String.format("Congratulations! Time Spend: %dhours %dminutes and %dseconds", timeSpent / 60 / 60,  timeSpent/ 60 % 60,
+      timeSpent % 60));
    }
 
    // [TODO 2] Define a Listener Inner Class
@@ -173,7 +175,9 @@ public class GameBoard extends JPanel {
          Cell sourceCell = (Cell) ke.getSource();
          int numberIn = -1;
 
-         if (ke.getKeyChar() >= '1' && ke.getKeyChar() <= '9' && sourceCell.isEditable()) {
+         if (ke.getKeyChar() >= '1' && ke.getKeyChar() <= '9' && sourceCell.status != CellStatus.REVEALED
+               && sourceCell.status != CellStatus.SHOWN) {
+            sourceCell.setEditable(true);
             sourceCell.setText("");
             numberIn = ke.getKeyChar() - 48;
 
@@ -202,6 +206,7 @@ public class GameBoard extends JPanel {
          } else {
             sourceCell.setEditable(false);
          }
+
       }
 
       @Override
