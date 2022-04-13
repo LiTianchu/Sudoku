@@ -12,8 +12,8 @@ public class Music {
     static long clipTimePosition;
 
     public Music() {
-        file = new File("sudoku/Music.wav");
-        congratFile = new File("sudoku/Congrat.wav");
+        file = new File(getClass().getResource("Music.wav").getPath());
+        congratFile = new File(getClass().getResource("Congrat.wav").getPath());
 
     }
 
