@@ -66,6 +66,7 @@ public class Cell extends JTextField {
          super.setBackground(BG_WRONG_GUESS);
 
       } else if (status == CellStatus.REVEALED) {
+         // new type of cell(revealed by "hint" or "solve for me")
          super.setEditable(false);
          super.setOpaque(true);
          super.setBackground(BG_REVEALED);

@@ -1,6 +1,5 @@
 package sudoku;
 
-import java.awt.Color;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -8,38 +7,40 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 public class TimeManager {
-    public static int secondPassed = 0;
-    public static Timer timer = new Timer();
-    public static JLabel timerDisplay = new JLabel("00:00", SwingConstants.CENTER);
+    static int secondPassed = 0;
+    static Timer timer = new Timer();
+    static JLabel timerDisplay = new JLabel("00:00:00", SwingConstants.CENTER);
 
-    public static TimerTask task = new TimerTask() {
+    static TimerTask task = new TimerTask() {
         public void run() {
             secondPassed++;
-            timerDisplay.setText(String.format("%02d:%02d", secondPassed / 60, secondPassed % 60));
+            if (secondPassed / 60 / 60 % 60 >= 24) { // when reach 23:59:59, reset to 0
+                secondPassed = 0;
+            }
+            timerDisplay.setText(String.format("%02d:%02d:%02d", secondPassed / 60 / 60 % 60, secondPassed / 60 % 60,
+                    secondPassed % 60));//display the time
         }
     };
 
-    public static void startTimer() {
+    static void startTimer() {
         timer.scheduleAtFixedRate(task, 1000, 1000);
     }
 
-    public static void incrementTime() {
+    static void incrementTime() {
         secondPassed++;
     }
 
-    public static int getTime() {
+    static int getTime() {
         return secondPassed;
     }
 
-    public static void stopTimer() {
-        // timerDisplay.setForeground(Color.BLUE);
+    static void stopTimer() {
         timer.cancel();
         timer.purge();
     }
 
-    public static void resetTimer() {
-        timer.cancel();
-        timer.purge();
+    static void resetTimer() {
+        stopTimer();
         secondPassed = 0;
         timer = new Timer();
         timerDisplay.setText("00:00");
@@ -51,23 +52,3 @@ public class TimeManager {
         };
     }
 }
-
-// private long secPassed;
-// private long timeMillis;
-
-// public TimeManagement() {
-// secPassed = 0;
-// }
-
-// public void run() {
-// timeMillis = System.currentTimeMillis();
-// secPassed = timeMillis / 1000;
-// }
-
-// public void setTime(int secPassed) {
-// this.secPassed = secPassed;
-// }
-
-// public long getTime() {
-// return secPassed;
-// }
