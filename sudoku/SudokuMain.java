@@ -127,7 +127,7 @@ public class SudokuMain extends JFrame {
         @Override
         public void actionPerformed(ActionEvent evt) {
             String btnLabel = evt.getActionCommand();
-            startMenu.setVisible(false);
+            setVisible(false);
             TimeManager.startTimer(); // start timer
 
             // All the different method according to the level
